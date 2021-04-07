@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RollbackTest", "RollbackTest.vcxproj", "{4F6F713D-3BD2-00E2-E457-3998D099CC64}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|LinuxARM = Debug|LinuxARM
+		Debug|LinuxX64 = Debug|LinuxX64
+		Debug|LinuxX86 = Debug|LinuxX86
+		Debug|WindowsARM = Debug|WindowsARM
+		Debug|WindowsX64 = Debug|WindowsX64
+		Debug|WindowsX86 = Debug|WindowsX86
+		Release|LinuxARM = Release|LinuxARM
+		Release|LinuxX64 = Release|LinuxX64
+		Release|LinuxX86 = Release|LinuxX86
+		Release|WindowsARM = Release|WindowsARM
+		Release|WindowsX64 = Release|WindowsX64
+		Release|WindowsX86 = Release|WindowsX86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Debug|LinuxARM.ActiveCfg = Debug LinuxARM|ARM
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Debug|LinuxARM.Build.0 = Debug LinuxARM|ARM
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Debug|LinuxX64.ActiveCfg = Debug LinuxX64|x64
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Debug|LinuxX64.Build.0 = Debug LinuxX64|x64
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Debug|LinuxX86.ActiveCfg = Debug LinuxX86|Win32
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Debug|LinuxX86.Build.0 = Debug LinuxX86|Win32
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Debug|WindowsARM.ActiveCfg = Debug WindowsARM|ARM
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Debug|WindowsARM.Build.0 = Debug WindowsARM|ARM
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Debug|WindowsX64.ActiveCfg = Debug WindowsX64|x64
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Debug|WindowsX64.Build.0 = Debug WindowsX64|x64
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Debug|WindowsX86.ActiveCfg = Debug WindowsX86|Win32
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Debug|WindowsX86.Build.0 = Debug WindowsX86|Win32
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Release|LinuxARM.ActiveCfg = Release LinuxARM|ARM
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Release|LinuxARM.Build.0 = Release LinuxARM|ARM
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Release|LinuxX64.ActiveCfg = Release LinuxX64|x64
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Release|LinuxX64.Build.0 = Release LinuxX64|x64
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Release|LinuxX86.ActiveCfg = Release LinuxX86|Win32
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Release|LinuxX86.Build.0 = Release LinuxX86|Win32
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Release|WindowsARM.ActiveCfg = Release WindowsARM|ARM
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Release|WindowsARM.Build.0 = Release WindowsARM|ARM
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Release|WindowsX64.ActiveCfg = Release WindowsX64|x64
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Release|WindowsX64.Build.0 = Release WindowsX64|x64
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Release|WindowsX86.ActiveCfg = Release WindowsX86|Win32
+		{4F6F713D-3BD2-00E2-E457-3998D099CC64}.Release|WindowsX86.Build.0 = Release WindowsX86|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
