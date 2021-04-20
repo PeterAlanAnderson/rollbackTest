@@ -610,7 +610,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\GameState.h" />
+    <ClInclude Include="include\GameStateManager.h" />
     <ClInclude Include="include\KHR\khrplatform.h" />
+    <ClInclude Include="include\Shader.h" />
+    <ClInclude Include="include\Texture.h" />
     <ClInclude Include="include\glad\glad.h" />
     <ClInclude Include="include\glm\common.hpp" />
     <ClInclude Include="include\glm\detail\_features.hpp" />
@@ -894,10 +898,36 @@
     <ClInclude Include="include\glm\vec3.hpp" />
     <ClInclude Include="include\glm\vec4.hpp" />
     <ClInclude Include="include\glm\vector_relational.hpp" />
+    <ClInclude Include="include\stb\stb.h" />
+    <ClInclude Include="include\stb\stb_c_lexer.h" />
+    <ClInclude Include="include\stb\stb_connected_components.h" />
+    <ClInclude Include="include\stb\stb_divide.h" />
+    <ClInclude Include="include\stb\stb_ds.h" />
+    <ClInclude Include="include\stb\stb_dxt.h" />
+    <ClInclude Include="include\stb\stb_easy_font.h" />
+    <ClInclude Include="include\stb\stb_herringbone_wang_tile.h" />
+    <ClInclude Include="include\stb\stb_hexwave.h" />
+    <ClInclude Include="include\stb\stb_image.h" />
+    <ClInclude Include="include\stb\stb_image_resize.h" />
+    <ClInclude Include="include\stb\stb_image_write.h" />
+    <ClInclude Include="include\stb\stb_include.h" />
+    <ClInclude Include="include\stb\stb_leakcheck.h" />
+    <ClInclude Include="include\stb\stb_perlin.h" />
+    <ClInclude Include="include\stb\stb_rect_pack.h" />
+    <ClInclude Include="include\stb\stb_sprintf.h" />
+    <ClInclude Include="include\stb\stb_textedit.h" />
+    <ClInclude Include="include\stb\stb_tilemap_editor.h" />
+    <ClInclude Include="include\stb\stb_truetype.h" />
+    <ClInclude Include="include\stb\stb_voxel_render.h" />
+    <ClInclude Include="include\InputProcessor.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\InputProcessor.cpp" />
+    <ClCompile Include="src\GameState.cpp" />
+    <ClCompile Include="src\GameStateManager.cpp" />
+    <ClCompile Include="src\main2.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\glad.c" />
-    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="premake5.lua" />
