@@ -2,7 +2,14 @@
 #include <GLFW/glfw3.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
+#include <GameStateManager.h>
+#include <GameState.h>
+#include <InputProcessor.h>
+#include <connection.h>
 
+#include <boost/asio.hpp>
+#include <websocketpp/client.hpp>
+#include <websocketpp/config/asio_no_tls_client.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -18,8 +25,38 @@ void processInput(GLFWwindow* window);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
+void clear() {
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
 int main()
 {
+    std::cout << "Player 1 or 2? [1/2] " << '\n';
+    int localPlayer;
+    while (true) {
+        std::cin >> localPlayer;
+        break;
+    }
+    std::cout << "Netplay? [y/n]" << '\n';
+    int netplaySession;
+    while (true) {
+        std::cin >> netplaySession;
+        break;
+    }
+
+    GameStateManager gameStateManager(localPlayer);
+    InputProcessor inputProcessor;
+    std::cout << netplaySession << "\n";
+    if (netplaySession == 1) {
+        connection connection(localPlayer, gameStateManager);
+        connection.init();
+    }
+
+
+
+    double frameLimiter = 1 / 60;
+    double lastTime = 0.0;
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -149,20 +186,24 @@ int main()
 
     // render loop
     // -----------
-    double lastTime = 0.0;
     while (!glfwWindowShouldClose(window))
     {
-        lastTime = glfwGetTime() - lastTime;
-        std::cout << lastTime << '\n';
         // input
         // -----
         processInput(window);
+        inputProcessor.evaluateInput(window);
+        double nowTime = glfwGetTime();
+        if (glfwGetTime() >= lastTime + frameLimiter) {
+            lastTime += frameLimiter;
+            gameStateManager.incrementFrameCount();
+            gameStateManager.captureGameState(inputProcessor.getLocalAction());
+        }
 
         // render
         // ------
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
+        clear();
+        GameState gameState = gameStateManager.getMostRecentState();
+        
         // bind textures on corresponding texture units
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
@@ -171,8 +212,8 @@ int main()
 
         // create transformations
         glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
-        transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+        transform = glm::translate(transform, glm::vec3(gameState.p1CenterX, gameState.p1CenterY, 0.0f));
+        //transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
         // get matrix's uniform location and set matrix
         ourShader.use();
@@ -184,8 +225,8 @@ int main()
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glm::mat4 transform2 = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        transform2 = glm::translate(transform2, glm::vec3(0.5f, 0.5f, 0.0f));
-        transform2 = glm::rotate(transform2, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+        transform2 = glm::translate(transform2, glm::vec3(gameState.p2CenterX, gameState.p2CenterY, 0.0f));
+        //transform2 = glm::rotate(transform2, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
         // get matrix's uniform location and set matrix
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform2));

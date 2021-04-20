@@ -610,6 +610,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\connectionHandler.h" />
+    <ClInclude Include="include\GameState.h" />
+    <ClInclude Include="include\GameStateManager.h" />
+    <ClInclude Include="include\InputProcessor.h" />
     <ClInclude Include="include\KHR\khrplatform.h" />
     <ClInclude Include="include\glad\glad.h" />
     <ClInclude Include="include\glm\common.hpp" />
@@ -916,10 +920,15 @@
     <ClInclude Include="include\stb\stb_tilemap_editor.h" />
     <ClInclude Include="include\stb\stb_truetype.h" />
     <ClInclude Include="include\stb\stb_voxel_render.h" />
+    <ClInclude Include="include\connection.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\stb\stb_vorbis.c" />
+    <ClCompile Include="src\connection.cpp" />
+    <ClCompile Include="src\GameState.cpp" />
+    <ClCompile Include="src\GameStateManager.cpp" />
     <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\InputProcessor.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
