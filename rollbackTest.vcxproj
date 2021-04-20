@@ -894,12 +894,37 @@
     <ClInclude Include="include\glm\vec3.hpp" />
     <ClInclude Include="include\glm\vec4.hpp" />
     <ClInclude Include="include\glm\vector_relational.hpp" />
+    <ClInclude Include="include\shader.h" />
+    <ClInclude Include="include\stb\stb.h" />
+    <ClInclude Include="include\stb\stb_connected_components.h" />
+    <ClInclude Include="include\stb\stb_c_lexer.h" />
+    <ClInclude Include="include\stb\stb_divide.h" />
+    <ClInclude Include="include\stb\stb_ds.h" />
+    <ClInclude Include="include\stb\stb_dxt.h" />
+    <ClInclude Include="include\stb\stb_easy_font.h" />
+    <ClInclude Include="include\stb\stb_herringbone_wang_tile.h" />
+    <ClInclude Include="include\stb\stb_hexwave.h" />
+    <ClInclude Include="include\stb\stb_image.h" />
+    <ClInclude Include="include\stb\stb_image_resize.h" />
+    <ClInclude Include="include\stb\stb_image_write.h" />
+    <ClInclude Include="include\stb\stb_include.h" />
+    <ClInclude Include="include\stb\stb_leakcheck.h" />
+    <ClInclude Include="include\stb\stb_perlin.h" />
+    <ClInclude Include="include\stb\stb_rect_pack.h" />
+    <ClInclude Include="include\stb\stb_sprintf.h" />
+    <ClInclude Include="include\stb\stb_textedit.h" />
+    <ClInclude Include="include\stb\stb_tilemap_editor.h" />
+    <ClInclude Include="include\stb\stb_truetype.h" />
+    <ClInclude Include="include\stb\stb_voxel_render.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="include\stb\stb_vorbis.c" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="3.3.shader.fs" />
+    <None Include="3.3.shader.vs" />
     <None Include="premake5.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
