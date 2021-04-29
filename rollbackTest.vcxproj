@@ -610,6 +610,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\character.h" />
     <ClInclude Include="include\connectionHandler.h" />
     <ClInclude Include="include\GameState.h" />
     <ClInclude Include="include\GameStateManager.h" />
@@ -921,8 +922,10 @@
     <ClInclude Include="include\stb\stb_truetype.h" />
     <ClInclude Include="include\stb\stb_voxel_render.h" />
     <ClInclude Include="include\connection.h" />
+    <ClInclude Include="include\updServer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\character.cpp" />
     <ClCompile Include="include\stb\stb_vorbis.c" />
     <ClCompile Include="src\connection.cpp" />
     <ClCompile Include="src\GameState.cpp" />

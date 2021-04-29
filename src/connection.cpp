@@ -1,6 +1,8 @@
 #include "connection.h"
 #include <iostream>
 #include <boost/asio.hpp>
+#include <boost/asio/ts/buffer.hpp>
+#include <boost/asio/ts/internet.hpp>
 #include <boost/array.hpp>
 #include <boost/bind.hpp>
 #include <thread>
@@ -11,81 +13,56 @@
 #include <functional>
 #include <GameStateManager.h>
 #include <connectionHandler.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <updServer.h>
+#include <winsock2.h>
+#include <Ws2tcpip.h>
+#include <windows.h>
 
 #include <iostream>
 
 #define IPADDRESS "127.0.0.1" // "192.168.1.64"
 #define UDP_PORT 13251
 
-using boost::asio::ip::udp;
-using boost::asio::ip::address;
+#pragma comment(lib,"ws2_32.lib")
 
-void Sender(std::string in) {
-    boost::asio::io_service io_service;
-    udp::socket socket(io_service);
-    udp::endpoint remote_endpoint = udp::endpoint(address::from_string(IPADDRESS), UDP_PORT);
-    socket.open(udp::v4());
-
-    boost::system::error_code err;
-    auto sent = socket.send_to(boost::asio::buffer(in), remote_endpoint, 0, err);
-    socket.close();
-    std::cout << "Sent Payload --- " << sent << "\n";
+connection::connection(int connType, GameStateManager &gsm) {
+	gameStateManager = gsm;
+	type = connType;
 }
 
-class Connection {
-    boost::asio::io_service io_service;
-    udp::socket socket{ io_service };
-    boost::array<char, 1024> recv_buffer;
-    udp::endpoint remote_endpoint;
+void connection::init() {
+	const char* port = "8080";
+	//std::cout << "doing init\n";
+	//boost::system::error_code ec;
+	//std::cout << "doing init2\n";
 
-    int count = 3;
+	//boost::asio::io_context context;
+	//std::cout << "doing init3\n";
+	std::cout << "doing init4\n";
+	boost::asio::io_service io_service;
+	udpServer server(io_service, std::atoi(port));
+	//boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::make_address("93.184.216.34", ec), 80);
 
-    void handle_receive(const boost::system::error_code& error, size_t bytes_transferred) {
-        if (error) {
-            std::cout << "Receive failed: " << error.message() << "\n";
-            return;
-        }
-        std::cout << "Received: '" << std::string(recv_buffer.begin(), recv_buffer.begin() + bytes_transferred) << "' (" << error.message() << ")\n";
 
-        if (--count > 0) {
-            std::cout << "Count: " << count << "\n";
-            wait();
-        }
-    }
+	//boost::asio::ip::tcp::socket socket(context);
+	std::cout << "doing init5\n";
+	io_service.run();
 
-    void wait() {
-        socket.async_receive_from(boost::asio::buffer(recv_buffer),
-            remote_endpoint,
-            boost::bind(&Client::handle_receive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
-    }
+	//socket.connect(endpoint, ec);
+	std::cout << "doing init6\n";
 
-    void Receiver()
-    {
-        socket.open(udp::v4());
-        socket.bind(udp::endpoint(address::from_string(IPADDRESS), UDP_PORT));
+	//if (!ec) {
+	//	std::cout << "CONNECTED!" << std::endl;
+	//}
+	//else {
+	//	std::cout << "failed to connect to address:\n" << ec.message() << std::endl;
+ //	}
+	//system("pause");
 
-        wait();
-
-        std::cout << "Receiving\n";
-        io_service.run();
-        std::cout << "Receiver exit\n";
-    }
-};
-
-int main(int argc, char* argv[])
-{
-    Client client;
-    std::thread r([&] { client.Receiver(); });
-
-    std::string input = argc > 1 ? argv[1] : "hello world";
-    std::cout << "Input is '" << input.c_str() << "'\nSending it to Sender Function...\n";
-
-    for (int i = 0; i < 3; ++i) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
-        Sender(input);
-    }
-
-    r.join();
 }
 
 //typedef websocketpp::server<websocketpp::config::asio> server;

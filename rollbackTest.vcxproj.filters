@@ -912,6 +912,8 @@
     <ClInclude Include="include\InputProcessor.h" />
     <ClInclude Include="include\connection.h" />
     <ClInclude Include="include\connectionHandler.h" />
+    <ClInclude Include="include\updServer.h" />
+    <ClInclude Include="include\character.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -925,6 +927,7 @@
     <ClCompile Include="src\GameStateManager.cpp" />
     <ClCompile Include="src\InputProcessor.cpp" />
     <ClCompile Include="src\connection.cpp" />
+    <ClCompile Include="src\character.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="premake5.lua" />

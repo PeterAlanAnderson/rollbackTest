@@ -203,7 +203,6 @@ int main()
         // ------
         clear();
         GameState gameState = gameStateManager.getMostRecentState();
-        
         // bind textures on corresponding texture units
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
@@ -211,8 +210,10 @@ int main()
         glBindTexture(GL_TEXTURE_2D, texture2);
 
         // create transformations
+        int p1Flip = gameStateManager.charactersObj["player1"].isFacingRight ? 1 : -1;
         glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
         transform = glm::translate(transform, glm::vec3(gameState.p1CenterX, gameState.p1CenterY, 0.0f));
+        transform = glm::scale(transform, glm::vec3(0.5*p1Flip, 0.5, 0.5));
         //transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
         // get matrix's uniform location and set matrix
@@ -224,8 +225,12 @@ int main()
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
+        int p2Flip = gameStateManager.charactersObj["player2"].isFacingRight ? -1 : 1;
         glm::mat4 transform2 = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
         transform2 = glm::translate(transform2, glm::vec3(gameState.p2CenterX, gameState.p2CenterY, 0.0f));
+        transform2 = glm::scale(transform2, glm::vec3(0.5*p2Flip, 0.5, 0.5));
+        transform2 = glm::scale(transform2, glm::vec3(-1.0, 1.0, 1.0));
+
         //transform2 = glm::rotate(transform2, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
         // get matrix's uniform location and set matrix
