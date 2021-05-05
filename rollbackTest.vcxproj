@@ -610,6 +610,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\animationState.h" />
+    <ClInclude Include="include\animationController.h" />
     <ClInclude Include="include\character.h" />
     <ClInclude Include="include\connectionHandler.h" />
     <ClInclude Include="include\GameState.h" />
@@ -923,8 +925,12 @@
     <ClInclude Include="include\stb\stb_voxel_render.h" />
     <ClInclude Include="include\connection.h" />
     <ClInclude Include="include\updServer.h" />
+    <ClInclude Include="include\renderer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\animationState.cpp" />
+    <ClCompile Include="src\renderer.cpp" />
+    <ClCompile Include="src\animationController.cpp" />
     <ClCompile Include="src\character.cpp" />
     <ClCompile Include="include\stb\stb_vorbis.c" />
     <ClCompile Include="src\connection.cpp" />

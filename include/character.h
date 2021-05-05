@@ -28,11 +28,8 @@ public:
 	int hitStunFrames;
 	int blockStunFrames;
 	float health;
-	bool isStanding;
-	bool isCrouching;
-	bool isWalkingForward;
-	bool isWalkingBackward;
 	bool isFacingRight;
+	int state;
 
 };
 

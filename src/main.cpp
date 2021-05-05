@@ -1,12 +1,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.h>
 #include <GameStateManager.h>
 #include <GameState.h>
 #include <InputProcessor.h>
 #include <connection.h>
-
+#include <renderer.h>
 #include <boost/asio.hpp>
 #include <websocketpp/client.hpp>
 #include <websocketpp/config/asio_no_tls_client.hpp>
@@ -46,19 +44,22 @@ int main()
     }
 
     GameStateManager gameStateManager(localPlayer);
+    std::cout << "Aevent" << 1 << std::endl;
+
     InputProcessor inputProcessor;
+    std::cout << "Aevent" << 2 << std::endl;
+
     std::cout << netplaySession << "\n";
     if (netplaySession == 1) {
         connection connection(localPlayer, gameStateManager);
         connection.init();
     }
-
-
-
     double frameLimiter = 1 / 60;
     double lastTime = 0.0;
     // glfw: initialize and configure
     // ------------------------------
+    std::cout << "Aevent" << 3 << std::endl;
+
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -77,6 +78,11 @@ int main()
         glfwTerminate();
         return -1;
     }
+    std::cout << "Aevent" << 4 << std::endl;
+
+    
+    std::cout << "Aevent" << 5 << std::endl;
+
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
@@ -87,101 +93,101 @@ int main()
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-
+    renderer renderer(window);
     // build and compile our shader zprogram
     // ------------------------------------
-    Shader ourShader("3.3.shader.vs", "3.3.shader.fs");
+    //Shader ourShader("3.3.shader.vs", "3.3.shader.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
-    float vertices[] = {
-        // positions          // texture coords
-         0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
-         0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
-        -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left 
-    };
-    unsigned int indices[] = {
-        0, 1, 3, // first triangle
-        1, 2, 3  // second triangle
-    };
-    unsigned int VBO, VAO, EBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
+    //float vertices[] = {
+    //    // positions          // texture coords
+    //     0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
+    //     0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
+    //    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
+    //    -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left 
+    //};
+    //unsigned int indices[] = {
+    //    0, 1, 3, // first triangle
+    //    1, 2, 3  // second triangle
+    //};
+    //unsigned int VBO, VAO, EBO;
+    //glGenVertexArrays(1, &VAO);
+    //glGenBuffers(1, &VBO);
+    //glGenBuffers(1, &EBO);
 
-    glBindVertexArray(VAO);
+    //glBindVertexArray(VAO);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    //glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    //glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    // texture coord attribute
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+    //// position attribute
+    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    //glEnableVertexAttribArray(0);
+    //// texture coord attribute
+    //glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    //glEnableVertexAttribArray(1);
 
 
-    // load and create a texture 
-    // -------------------------
-    unsigned int texture1, texture2;
-    // texture 1
-    // ---------
-    glGenTextures(1, &texture1);
-    glBindTexture(GL_TEXTURE_2D, texture1);
-    // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // load image, create texture and generate mipmaps
-    int width, height, nrChannels;
-    stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-    unsigned char* data = stbi_load("resources/wall.jpg", &width, &height, &nrChannels, 0);
-    if (data)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        std::cout << "Failed to load texture 1" << std::endl;
-    }
-    stbi_image_free(data);
-    // texture 2
-    // ---------
-    glGenTextures(1, &texture2);
-    glBindTexture(GL_TEXTURE_2D, texture2);
-    // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // load image, create texture and generate mipmaps
-    data = stbi_load("resources/awesomeface.png", &width, &height, &nrChannels, 0);
-    if (data)
-    {
-        // note that the awesomeface.png has transparency and thus an alpha channel, so make sure to tell OpenGL the data type is of GL_RGBA
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        std::cout << "Failed to load texture 2" << std::endl;
-    }
-    stbi_image_free(data);
+    //// load and create a texture 
+    //// -------------------------
+    //unsigned int texture1, texture2;
+    //// texture 1
+    //// ---------
+    //glGenTextures(1, &texture1);
+    //glBindTexture(GL_TEXTURE_2D, texture1);
+    //// set the texture wrapping parameters
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    //// set texture filtering parameters
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //// load image, create texture and generate mipmaps
+    //int width, height, nrChannels;
+    //stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
+    //unsigned char* data = stbi_load("resources/wall.jpg", &width, &height, &nrChannels, 0);
+    //if (data)
+    //{
+    //    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    //    glGenerateMipmap(GL_TEXTURE_2D);
+    //}
+    //else
+    //{
+    //    std::cout << "Failed to load texture 1" << std::endl;
+    //}
+    //stbi_image_free(data);
+    //// texture 2
+    //// ---------
+    //glGenTextures(1, &texture2);
+    //glBindTexture(GL_TEXTURE_2D, texture2);
+    //// set the texture wrapping parameters
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    //// set texture filtering parameters
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //// load image, create texture and generate mipmaps
+    //data = stbi_load("resources/awesomeface.png", &width, &height, &nrChannels, 0);
+    //if (data)
+    //{
+    //    // note that the awesomeface.png has transparency and thus an alpha channel, so make sure to tell OpenGL the data type is of GL_RGBA
+    //    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    //    glGenerateMipmap(GL_TEXTURE_2D);
+    //}
+    //else
+    //{
+    //    std::cout << "Failed to load texture 2" << std::endl;
+    //}
+    //stbi_image_free(data);
 
-    // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
-    // -------------------------------------------------------------------------------------------
-    ourShader.use();
-    ourShader.setInt("texture1", 0);
-    ourShader.setInt("texture2", 1);
+    //// tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
+    //// -------------------------------------------------------------------------------------------
+    //ourShader.use();
+    //ourShader.setInt("texture1", 0);
+    //ourShader.setInt("texture2", 1);
 
 
     // render loop
@@ -201,41 +207,42 @@ int main()
 
         // render
         // ------
-        clear();
+        renderer.clear();
         GameState gameState = gameStateManager.getMostRecentState();
-        // bind textures on corresponding texture units
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture1);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture2);
+        renderer.draw(gameState);
+        //// bind textures on corresponding texture units
+        //glActiveTexture(GL_TEXTURE0);
+        //glBindTexture(GL_TEXTURE_2D, texture1);
+        //glActiveTexture(GL_TEXTURE1);
+        //glBindTexture(GL_TEXTURE_2D, texture2);
 
-        // create transformations
-        int p1Flip = gameStateManager.charactersObj["player1"].isFacingRight ? 1 : -1;
-        glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        transform = glm::translate(transform, glm::vec3(gameState.p1CenterX, gameState.p1CenterY, 0.0f));
-        transform = glm::scale(transform, glm::vec3(0.5*p1Flip, 0.5, 0.5));
-        //transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+        //// create transformations
+        //int p1Flip = gameStateManager.charactersObj["player1"].isFacingRight ? 1 : -1;
+        //glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        //transform = glm::translate(transform, glm::vec3(gameState.p1CenterX - 1.0f, gameState.p1CenterY, 0.0f));
+        //transform = glm::scale(transform, glm::vec3(0.5*p1Flip, 0.5, 0.5));
+        ////transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
-        // get matrix's uniform location and set matrix
-        ourShader.use();
-        unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+        //// get matrix's uniform location and set matrix
+        //ourShader.use();
+        //unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
+        //glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
-        // render container
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        //// render container
+        //glBindVertexArray(VAO);
+        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-        int p2Flip = gameStateManager.charactersObj["player2"].isFacingRight ? -1 : 1;
-        glm::mat4 transform2 = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        transform2 = glm::translate(transform2, glm::vec3(gameState.p2CenterX, gameState.p2CenterY, 0.0f));
-        transform2 = glm::scale(transform2, glm::vec3(0.5*p2Flip, 0.5, 0.5));
-        transform2 = glm::scale(transform2, glm::vec3(-1.0, 1.0, 1.0));
+        //int p2Flip = gameStateManager.charactersObj["player2"].isFacingRight ? -1 : 1;
+        //glm::mat4 transform2 = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        //transform2 = glm::translate(transform2, glm::vec3(gameState.p2CenterX - 1.0f, gameState.p2CenterY, 0.0f));
+        //transform2 = glm::scale(transform2, glm::vec3(0.5*p2Flip, 0.5, 0.5));
+        //transform2 = glm::scale(transform2, glm::vec3(-1.0, 1.0, 1.0));
 
-        //transform2 = glm::rotate(transform2, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+        ////transform2 = glm::rotate(transform2, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
-        // get matrix's uniform location and set matrix
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform2));
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        //// get matrix's uniform location and set matrix
+        //glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform2));
+        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 
 
@@ -247,9 +254,9 @@ int main()
 
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
+    //glDeleteVertexArrays(1, &VAO);
+    //glDeleteBuffers(1, &VBO);
+    //glDeleteBuffers(1, &EBO);
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------

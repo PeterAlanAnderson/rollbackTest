@@ -10,12 +10,10 @@ character::character() {
 	jumpPower = 0.0f;
 	speed = 0.0f;
 	health = 1000.0;
-	isStanding = true;
-	isCrouching = false;
-	isWalkingBackward = false;
-	isWalkingForward = false;
 	hMomentum = 0;
 	vMomentum = 0;
+	state = 0;
+	hitStunFrames = 0;
 }
 character::character(std::string a_name, float a_ecbHeight, float a_ecbWidth, float a_mass, float a_jumpPower, float a_speed) {
 	name = a_name;
@@ -27,10 +25,9 @@ character::character(std::string a_name, float a_ecbHeight, float a_ecbWidth, fl
 	jumpPower = a_jumpPower;
 	speed = a_speed;
 	health = 1000.0;
-	isStanding = true;
-	isCrouching = false;
-	isWalkingBackward = false;
-	isWalkingForward = false;
 	hMomentum = 0;
 	vMomentum = 0;
+	state = 0;
+	hitStunFrames = 0;
+
 }
