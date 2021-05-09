@@ -940,4 +940,9 @@
     <None Include="3.3.shader.fs" />
     <None Include="3.3.shader.vs" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\faceWalkForward1.png" />
+    <Image Include="resources\faceWalkForward2.png" />
+    <Image Include="resources\faceWalkForward3.png" />
+  </ItemGroup>
 </Project>

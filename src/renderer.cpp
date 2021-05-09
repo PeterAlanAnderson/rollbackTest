@@ -8,12 +8,19 @@
 #include <shader.h>
 #include <iostream>
 #include <GameState.h>
+#include <vector>
+#include <math.h>
 
 renderer::renderer(GLFWwindow* a_window) {
 
     window = a_window;
     // build and compile our shader zprogram
     //ourShader = Shader("3.3.shader.vs", "3.3.shader.fs");
+
+    //glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendEquation(GL_FUNC_ADD);
 
     float vertices[] = {
         // positions          // texture coords
@@ -47,110 +54,70 @@ renderer::renderer(GLFWwindow* a_window) {
     glEnableVertexAttribArray(1);
 
 
-    // load and create a texture 
-    // -------------------------
-    //unsigned int texture1, texture2;
-    //// texture 1
-    //// ---------
-    //glGenTextures(1, &texture1);
-    //glBindTexture(GL_TEXTURE_2D, texture1);
-    //// set the texture wrapping parameters
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    //// set texture filtering parameters
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //// load image, create texture and generate mipmaps
-    //int width, height, nrChannels;
-    //stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-    //unsigned char* data = stbi_load("resources/wall.jpg", &width, &height, &nrChannels, 0);
-    //if (data)
-    //{
-    //    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-    //    glGenerateMipmap(GL_TEXTURE_2D);
-    //}
-    //else
-    //{
-    //    std::cout << "Failed to load texture 1" << std::endl;
-    //}
-    //stbi_image_free(data);
-    //// texture 2
-    //// ---------
-    //glGenTextures(1, &texture2);
-    //glBindTexture(GL_TEXTURE_2D, texture2);
-    //// set the texture wrapping parameters
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    //// set texture filtering parameters
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //// load image, create texture and generate mipmaps
-    //data = stbi_load("resources/awesomeface.png", &width, &height, &nrChannels, 0);
-    //if (data)
-    //{
-    //    // note that the awesomeface.png has transparency and thus an alpha channel, so make sure to tell OpenGL the data type is of GL_RGBA
-    //    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-    //    glGenerateMipmap(GL_TEXTURE_2D);
-    //}
-    //else
-    //{
-    //    std::cout << "Failed to load texture 2" << std::endl;
-    //}
-    //stbi_image_free(data);
-
-    // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
-    // -------------------------------------------------------------------------------------------
     ourShader.use();
     ourShader.setInt("texture1", 0);
     ourShader.setInt("texture2", 1);
     std::cout << animController.character1Animations[0].frames[0].lastFrame << " frames\n";
 }
 
-void renderer::draw(GameState gameState) {
-    // bind textures on corresponding texture units
-    unsigned int texture = animController.character1Animations[0].frames[0].texture;
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    //glActiveTexture(GL_TEXTURE1);
-    //glBindTexture(GL_TEXTURE_2D, texture2);
 
-    // create transformations
-    int p1Flip = gameState.p1CenterX < gameState.p2CenterX ? 1 : -1;
-    glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-    transform = glm::translate(transform, glm::vec3(gameState.p1CenterX - 1.0f, gameState.p1CenterY, 0.0f));
-    transform = glm::scale(transform, glm::vec3(0.5 * p1Flip, 0.5, 0.5));
-    //transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+void renderer::generateTexturesAndDraw(GameState gameState) {
+    std::cout << "STATE FRAMES: " << gameState.p1StateFrames << " " << gameState.p2StateFrames << " \n";
+    std::vector<TextureObject> textureObjects;
+    std::cout << gameState.p1State << std::endl;
+    int p1AnimationDuration = animController.character1Animations[gameState.p1State].duration;
+    int p2AnimationDuration = animController.character1Animations[gameState.p2State].duration;
+    int p1FrameToDraw = fmod(gameState.p1StateFrames, p1AnimationDuration);
+    int p2FrameToDraw = fmod(gameState.p2StateFrames, p2AnimationDuration);
+    std::cout << "P2 frame to draw1: " << p2FrameToDraw << std::endl;
+    TextureObject player1Texture;
+    std::cout << "P1 frame to draw: " << p1FrameToDraw << std::endl;
+    std::cout << "P1 state: " << gameState.p1State << std::endl;
+    player1Texture.texture = animController.character1Animations[gameState.p1State].getTexture(p1FrameToDraw);
+    std::cout << "P1 texture: " << player1Texture.texture << std::endl;
+    player1Texture.coords = glm::vec3(gameState.p1CenterX - 1.0f, gameState.p1CenterY, 0.0f);
+    int p1Flip = gameState.p1FacingRight ? 1 : -1;
+    player1Texture.scaling = glm::vec3(0.5 * p1Flip, 0.5, 0.5);
+    TextureObject player2Texture;
+    std::cout << "P2 frame to draw: " << p2FrameToDraw << std::endl;
+    std::cout << "P2 state: " << gameState.p2State << std::endl;
+    player2Texture.texture = animController.character1Animations[gameState.p2State].getTexture(p2FrameToDraw);
+    player2Texture.coords = glm::vec3(gameState.p2CenterX - 1.0f, gameState.p2CenterY, 0.0f);
+    int p2Flip = gameState.p2FacingRight ? 1 : -1;
+    player2Texture.scaling = glm::vec3(0.5 * p2Flip, 0.5, 0.5);
+    textureObjects.emplace_back(player1Texture);
+    textureObjects.emplace_back(player2Texture);
+    //std::cout << "RENDERED STATE \n";
+    //std::cout << "P1 coords: " << gameState.p1CenterX << " P2 coords: " << gameState.p2FacingRight << std::endl;
+    std::cout << textureObjects[0].texture << " " << textureObjects[1].texture << std::endl;
+    //draw(textureObjects);
+    draw(textureObjects);
+}
 
-    // get matrix's uniform location and set matrix
+void renderer::draw(std::vector<TextureObject> textures) {
+
     ourShader.use();
     unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+    glActiveTexture(GL_TEXTURE0);
 
-    // render container
-    glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-    int p2Flip = gameState.p1CenterX > gameState.p2CenterX ? 1 : -1;
-    glm::mat4 transform2 = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-    transform2 = glm::translate(transform2, glm::vec3(gameState.p2CenterX - 1.0f, gameState.p2CenterY, 0.0f));
-    transform2 = glm::scale(transform2, glm::vec3(0.5 * p2Flip, 0.5, 0.5));
-    transform2 = glm::scale(transform2, glm::vec3(-1.0, 1.0, 1.0));
+    for (auto &textureObj : textures) { // I can't remember the other syntax for this with begin and end
+        std::cout << textures[0].texture << textures[1].texture << std::endl;
+        glBindTexture(GL_TEXTURE_2D, textureObj.texture);
+        glm::mat4 transform = glm::mat4(1.0f);
+        transform = glm::translate(transform, textureObj.coords);
+        transform = glm::scale(transform, textureObj.scaling);
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+        glBindVertexArray(VAO);
 
-    //transform2 = glm::rotate(transform2, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-    // get matrix's uniform location and set matrix
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform2));
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    }
+
 }
 
 void renderer::clear() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 }
-
-//void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-//{
-//    // make sure the viewport matches the new window dimensions; note that width and 
-//    // height will be significantly larger than specified on retina displays.
-//    glViewport(0, 0, width, height);
-//}

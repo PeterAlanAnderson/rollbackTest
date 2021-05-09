@@ -12,9 +12,28 @@ void animationController::loadAnimations(int character, int playerNum) {
 	std::cout << "INITIALIZING ANIMATOR\n";
 	//std::vector<animationState> animations = playerNum == 1 ? character1Animations : character2Animations;
 	if (character == 1) {
-		animationState animation;
-		animation.addFrame("resources/awesomeface.png", 1);
-		character1Animations.emplace_back(animation);
+		animationState standingAnimation;
+		standingAnimation.duration = 1;
+		standingAnimation.addFrame("resources/awesomeface.png", 1);
+		character1Animations.emplace_back(standingAnimation);
+		animationState walkForwardAnimation;
+		walkForwardAnimation.duration = 60;
+		walkForwardAnimation.addFrame("resources/faceWalkForward1.png", 20);
+		walkForwardAnimation.addFrame("resources/faceWalkForward2.png", 40);
+		walkForwardAnimation.addFrame("resources/faceWalkForward3.png", 60);
+		character1Animations.emplace_back(walkForwardAnimation);
+		character1Animations.emplace_back(standingAnimation);
+		character1Animations.emplace_back(standingAnimation);
+		character1Animations.emplace_back(standingAnimation);
+		character1Animations.emplace_back(standingAnimation);
+		character1Animations.emplace_back(standingAnimation);
+		character1Animations.emplace_back(standingAnimation);
+		character1Animations.emplace_back(standingAnimation);
+		character1Animations.emplace_back(standingAnimation);
+		character1Animations.emplace_back(standingAnimation);
+		character1Animations.emplace_back(standingAnimation);
+
+
 	}
 	std::cout << character1Animations[0].frames[0].lastFrame << "\n";
 }

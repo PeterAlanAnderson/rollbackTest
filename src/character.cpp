@@ -13,7 +13,7 @@ character::character() {
 	hMomentum = 0;
 	vMomentum = 0;
 	state = 0;
-	hitStunFrames = 0;
+	stateFrames = 0;
 }
 character::character(std::string a_name, float a_ecbHeight, float a_ecbWidth, float a_mass, float a_jumpPower, float a_speed) {
 	name = a_name;
@@ -28,6 +28,6 @@ character::character(std::string a_name, float a_ecbHeight, float a_ecbWidth, fl
 	hMomentum = 0;
 	vMomentum = 0;
 	state = 0;
-	hitStunFrames = 0;
+	stateFrames = 0;
 
 }

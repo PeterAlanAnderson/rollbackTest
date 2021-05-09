@@ -19,7 +19,7 @@ public:
 	GameState getMostRecentState();
 	void performRollbackOperation(GameState remoteSessionState);
 	void captureGameState(std::string input);
-	void handleAirMovement(character& player, std::string input);
+	void handleAirMovement(character& player, std::string input, int playerIdentifier);
 	bool ecbDoesOverlap(character& player1, character& player2);
 	void ecbPushOut(character& player1, character& player2);
 	void wallCheck(character& player1);

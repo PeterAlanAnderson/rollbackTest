@@ -25,8 +25,7 @@ public:
 	float speed;
 	float hMomentum;
 	float vMomentum;
-	int hitStunFrames;
-	int blockStunFrames;
+	int stateFrames;
 	float health;
 	bool isFacingRight;
 	int state;
