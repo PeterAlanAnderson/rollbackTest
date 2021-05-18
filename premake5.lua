@@ -13,6 +13,7 @@ workspace "RollbackTest"
     includedirs {"%{wks.location}/include/", "C:/SDK/websocketpp/"}
 
     filter "action:vs*"
+        buildoptions {"/W4"}
         toolset "msc"
         includedirs {"C:/local/boost_1_75_0/", "C:/SDK/GLFW/include/"}
         libdirs {"C:/local/boost_1_75_0/stage/lib/", "C:/SDK/GLFW/lib-vc2019/"}
