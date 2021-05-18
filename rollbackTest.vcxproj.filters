@@ -28,13 +28,40 @@
     <Filter Include="include\glm\simd">
       <UniqueIdentifier>{B4E98F4A-A0E2-AE9C-C914-9421B56C8EA8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\stb">
+      <UniqueIdentifier>{610AC131-CDBF-3927-56B4-33FEC268302B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src">
       <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\GameState.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GameStateManager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InputProcessor.h">
+      <Filter>include</Filter>
+    </ClInclude>
     <ClInclude Include="include\KHR\khrplatform.h">
       <Filter>include\KHR</Filter>
+    </ClInclude>
+    <ClInclude Include="include\animationController.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\animationState.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\character.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\connection.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\connectionHandler.h">
+      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\glad\glad.h">
       <Filter>include\glad</Filter>
@@ -885,64 +912,119 @@
     <ClInclude Include="include\glm\vector_relational.hpp">
       <Filter>include\glm</Filter>
     </ClInclude>
-    <ClInclude Include="include\shader.h" />
-    <ClInclude Include="include\stb\stb.h" />
-    <ClInclude Include="include\stb\stb_c_lexer.h" />
-    <ClInclude Include="include\stb\stb_connected_components.h" />
-    <ClInclude Include="include\stb\stb_divide.h" />
-    <ClInclude Include="include\stb\stb_ds.h" />
-    <ClInclude Include="include\stb\stb_dxt.h" />
-    <ClInclude Include="include\stb\stb_easy_font.h" />
-    <ClInclude Include="include\stb\stb_herringbone_wang_tile.h" />
-    <ClInclude Include="include\stb\stb_hexwave.h" />
-    <ClInclude Include="include\stb\stb_image.h" />
-    <ClInclude Include="include\stb\stb_image_resize.h" />
-    <ClInclude Include="include\stb\stb_image_write.h" />
-    <ClInclude Include="include\stb\stb_include.h" />
-    <ClInclude Include="include\stb\stb_leakcheck.h" />
-    <ClInclude Include="include\stb\stb_perlin.h" />
-    <ClInclude Include="include\stb\stb_rect_pack.h" />
-    <ClInclude Include="include\stb\stb_sprintf.h" />
-    <ClInclude Include="include\stb\stb_textedit.h" />
-    <ClInclude Include="include\stb\stb_tilemap_editor.h" />
-    <ClInclude Include="include\stb\stb_truetype.h" />
-    <ClInclude Include="include\stb\stb_voxel_render.h" />
-    <ClInclude Include="include\GameState.h" />
-    <ClInclude Include="include\GameStateManager.h" />
-    <ClInclude Include="include\InputProcessor.h" />
-    <ClInclude Include="include\connection.h" />
-    <ClInclude Include="include\connectionHandler.h" />
-    <ClInclude Include="include\updServer.h" />
-    <ClInclude Include="include\character.h" />
-    <ClInclude Include="include\animationController.h" />
-    <ClInclude Include="include\renderer.h" />
-    <ClInclude Include="include\animationState.h" />
+    <ClInclude Include="include\renderer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\shader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_c_lexer.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_connected_components.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_divide.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_ds.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_dxt.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_easy_font.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_herringbone_wang_tile.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_hexwave.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_image.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_image_resize.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_image_write.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_include.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_leakcheck.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_perlin.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_rect_pack.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_sprintf.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_textedit.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_tilemap_editor.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_truetype.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb\stb_voxel_render.h">
+      <Filter>include\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\updServer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Entity.h" />
+    <ClInclude Include="include\hitbox.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\GameState.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameStateManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InputProcessor.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\animationController.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\animationState.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\character.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\connection.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\connectionHandler.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\glad.c">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="include\stb\stb_vorbis.c" />
-    <ClCompile Include="src\GameState.cpp" />
-    <ClCompile Include="src\GameStateManager.cpp" />
-    <ClCompile Include="src\InputProcessor.cpp" />
-    <ClCompile Include="src\connection.cpp" />
-    <ClCompile Include="src\character.cpp" />
-    <ClCompile Include="src\animationController.cpp" />
-    <ClCompile Include="src\renderer.cpp" />
-    <ClCompile Include="src\animationState.cpp" />
+    <ClCompile Include="src\renderer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entity.cpp" />
+    <ClCompile Include="src\hitbox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="premake5.lua" />
-    <None Include="3.3.shader.fs" />
-    <None Include="3.3.shader.vs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="resources\faceWalkForward1.png" />
-    <Image Include="resources\faceWalkForward2.png" />
-    <Image Include="resources\faceWalkForward3.png" />
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@
 #include <GameState.h>
 #include <map>
 #include <character.h>
+#include <entity.h>
 
 class GameStateManager
 {
@@ -39,4 +40,3 @@ public:
 		land
 	};
 };
-
