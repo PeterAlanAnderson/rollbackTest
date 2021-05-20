@@ -1,11 +1,18 @@
 #pragma once
-#include <Entity.h>
+#include <enum-trees.h>
+#include <character.h>
 
 class hitbox {
-	position position;
-	dimensions dimensions;
-	Entity& owner;
-	Entity& target;
-	int attackReference;
+public:
+	int owner;
+	CharactersEnum character;
+	States attack;
+	
+	hitbox(int a_owner, CharactersEnum a_character, States a_attack) {
+		owner = a_owner;
+		character = a_character;
+		attack = a_attack;
+		
+	};
 };
 

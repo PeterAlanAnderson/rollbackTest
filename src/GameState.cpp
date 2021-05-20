@@ -1,27 +1,28 @@
 #include "GameState.h"
+#include <enum-trees.h>
 
 GameState::GameState(
 	float p1x, 
 	float p1y, 
 	float p1r, 
 	bool p1fr,
-	int a_p1State,
+	States a_p1State,
 	int a_p1StateFrames,
-	std::string p1i, 
-	float p2x, 
-	float p2y, 
-	float p2r, 
-	bool p2fr,
-	int a_p2State,
+	std::string p1i, // int
+	float p2x,		// bitfield for buttons pressed down - unsigned char
+	float p2y,		// 00000001 A pressed
+	float p2r,		// 00000101 C and A pressed
+	bool p2fr,		// unsigned short gives 16 bits
+	States a_p2State,
 	int a_p2StateFrames,
 	std::string p2i, 
 	int frame, 
 	bool remoteInputs
 ) {
-	p1CenterX = p1x;
+	p1CenterX = p1x;			// member initializer list
 	p1CenterY = p1y;
 	p1Rotation = p1r;
-	p1FacingRight = p1fr;
+	p1FacingRight = p1fr;		
 	p1State = a_p1State;
 	p1StateFrames = a_p1StateFrames;
 	p1Input = p1i;

@@ -1,7 +1,8 @@
 #include "character.h"
+#include <enum-trees.h>
 
 character::character() {
-	name = "none";
+	player = 0;
 	ecb.height = 0.0f;
 	ecb.width = 0.0f;
 	hurtbox.height = 0.0f;
@@ -12,11 +13,11 @@ character::character() {
 	health = 1000.0;
 	hMomentum = 0;
 	vMomentum = 0;
-	state = 0;
+	state = States::stand;
 	stateFrames = 0;
 }
-character::character(std::string a_name, float a_ecbHeight, float a_ecbWidth, float a_mass, float a_jumpPower, float a_speed) {
-	name = a_name;
+character::character(int a_player, float a_ecbHeight, float a_ecbWidth, float a_mass, float a_jumpPower, float a_speed) {
+	player = a_player;
 	ecb.height = a_ecbHeight;
 	ecb.width = a_ecbWidth;
 	hurtbox.height = a_ecbHeight;
@@ -27,7 +28,7 @@ character::character(std::string a_name, float a_ecbHeight, float a_ecbWidth, fl
 	health = 1000.0;
 	hMomentum = 0;
 	vMomentum = 0;
-	state = 0;
+	state = States::stand;
 	stateFrames = 0;
 
 }

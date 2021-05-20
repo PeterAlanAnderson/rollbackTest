@@ -610,10 +610,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\hitbox.h" />
-    <ClInclude Include="include\Entity.h" />
+    <ClInclude Include="include\big-map.h" />
+    <ClInclude Include="include\enum-trees.h" />
     <ClInclude Include="include\GameState.h" />
     <ClInclude Include="include\GameStateManager.h" />
+    <ClInclude Include="include\hitbox.h" />
     <ClInclude Include="include\InputProcessor.h" />
     <ClInclude Include="include\KHR\khrplatform.h" />
     <ClInclude Include="include\animationController.h" />
@@ -928,12 +929,12 @@
     <ClInclude Include="include\stb\stb_truetype.h" />
     <ClInclude Include="include\stb\stb_voxel_render.h" />
     <ClInclude Include="include\updServer.h" />
+    <ClInclude Include="include\statesMap.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\hitbox.cpp" />
-    <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\GameState.cpp" />
     <ClCompile Include="src\GameStateManager.cpp" />
+    <ClCompile Include="src\hitbox.cpp" />
     <ClCompile Include="src\InputProcessor.cpp" />
     <ClCompile Include="src\animationController.cpp" />
     <ClCompile Include="src\animationState.cpp" />

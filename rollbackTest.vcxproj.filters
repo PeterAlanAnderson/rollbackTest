@@ -984,8 +984,10 @@
     <ClInclude Include="include\updServer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\hitbox.h" />
+    <ClInclude Include="include\statesMap.h" />
+    <ClInclude Include="include\enum-trees.h" />
+    <ClInclude Include="include\big-map.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GameState.cpp">
@@ -1021,7 +1023,6 @@
     <ClCompile Include="src\renderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\hitbox.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,7 @@ void InputProcessor::evaluateInput(GLFWwindow* window) {
 	if (glfwGetKey(window, GLFW_KEY_D)) currentInput += "d";
 	if (glfwGetKey(window, GLFW_KEY_W)) currentInput += "w";
 	if (glfwGetKey(window, GLFW_KEY_S)) currentInput += "s";
+	if (glfwGetKey(window, GLFW_KEY_Y)) currentInput += "y";
 	//std::cout << "input " << currentInput << "\n";
 	localAction = currentInput;
 }

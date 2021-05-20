@@ -10,12 +10,12 @@
 unsigned int animationState::getTexture(int frame) {
     int i = 0;
     unsigned int texture = 0;
-    std::cout << "IN GET TEXTURE 1\n";
-    std::cout << frame << std::endl;
+    //std::cout << "IN GET TEXTURE 1\n";
+    //std::cout << frame << std::endl;
     while (texture == 0) {
-        std::cout << "IN GET TEXTURE Loop " << i << " " << frames[i].lastFrame << " " << frame << " \n";
+        //std::cout << "IN GET TEXTURE Loop " << i << " " << frames[i].lastFrame << " " << frame << " \n";
         if (frame <= frames[i].lastFrame) {
-            std::cout << "IN GET TEXTURE Loop 2 " << frames[i].texture << " \n";
+            //std::cout << "IN GET TEXTURE Loop 2 " << frames[i].texture << " \n";
             return frames[i].texture;
         }
         i++;

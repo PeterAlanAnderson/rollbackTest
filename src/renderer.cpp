@@ -62,34 +62,40 @@ renderer::renderer(GLFWwindow* a_window) {
 
 
 void renderer::generateTexturesAndDraw(GameState gameState) {
-    std::cout << "STATE FRAMES: " << gameState.p1StateFrames << " " << gameState.p2StateFrames << " \n";
+    //std::cout << "STATE FRAMES: " << gameState.p1StateFrames << " " << gameState.p2StateFrames << " \n";
+    //std::cout << "start \n";
+
     std::vector<TextureObject> textureObjects;
-    std::cout << gameState.p1State << std::endl;
-    int p1AnimationDuration = animController.character1Animations[gameState.p1State].duration;
-    int p2AnimationDuration = animController.character1Animations[gameState.p2State].duration;
+    std::cout << "p1 state: " << static_cast<int>(gameState.p1State) << std::endl;
+    int p1AnimationDuration = animController.character1Animations[static_cast<int>(gameState.p1State)].duration;
+    std::cout << "p1 animation duration: " << p1AnimationDuration << std::endl;
+    int p2AnimationDuration = animController.character1Animations[static_cast<int>(gameState.p2State)].duration;
     int p1FrameToDraw = fmod(gameState.p1StateFrames, p1AnimationDuration);
+    std::cout << "p1 frame to draw: " << p1FrameToDraw << std::endl;
     int p2FrameToDraw = fmod(gameState.p2StateFrames, p2AnimationDuration);
-    std::cout << "P2 frame to draw1: " << p2FrameToDraw << std::endl;
+    //std::cout << "P2 frame to draw1: " << p2FrameToDraw << std::endl;
     TextureObject player1Texture;
-    std::cout << "P1 frame to draw: " << p1FrameToDraw << std::endl;
-    std::cout << "P1 state: " << gameState.p1State << std::endl;
-    player1Texture.texture = animController.character1Animations[gameState.p1State].getTexture(p1FrameToDraw);
-    std::cout << "P1 texture: " << player1Texture.texture << std::endl;
+    //std::cout << "P1 frame to draw: " << p1FrameToDraw << std::endl;
+    //std::cout << "P1 state: " << gameState.p1State << std::endl;
+    player1Texture.texture = animController.character1Animations[static_cast<int>(gameState.p1State)].getTexture(p1FrameToDraw);
+    //std::cout << "P1 texture: " << player1Texture.texture << std::endl;
     player1Texture.coords = glm::vec3(gameState.p1CenterX - 1.0f, gameState.p1CenterY, 0.0f);
     int p1Flip = gameState.p1FacingRight ? 1 : -1;
     player1Texture.scaling = glm::vec3(0.5 * p1Flip, 0.5, 0.5);
     TextureObject player2Texture;
-    std::cout << "P2 frame to draw: " << p2FrameToDraw << std::endl;
-    std::cout << "P2 state: " << gameState.p2State << std::endl;
-    player2Texture.texture = animController.character1Animations[gameState.p2State].getTexture(p2FrameToDraw);
+
+    //std::cout << "P2 frame to draw: " << p2FrameToDraw << std::endl;
+    //std::cout << "P2 state: " << gameState.p2State << std::endl;
+    player2Texture.texture = animController.character1Animations[static_cast<int>(gameState.p2State)].getTexture(p2FrameToDraw);
     player2Texture.coords = glm::vec3(gameState.p2CenterX - 1.0f, gameState.p2CenterY, 0.0f);
     int p2Flip = gameState.p2FacingRight ? 1 : -1;
     player2Texture.scaling = glm::vec3(0.5 * p2Flip, 0.5, 0.5);
     textureObjects.emplace_back(player1Texture);
     textureObjects.emplace_back(player2Texture);
+
     //std::cout << "RENDERED STATE \n";
     //std::cout << "P1 coords: " << gameState.p1CenterX << " P2 coords: " << gameState.p2FacingRight << std::endl;
-    std::cout << textureObjects[0].texture << " " << textureObjects[1].texture << std::endl;
+    //std::cout << textureObjects[0].texture << " " << textureObjects[1].texture << std::endl;
     //draw(textureObjects);
     draw(textureObjects);
 }
@@ -102,7 +108,7 @@ void renderer::draw(std::vector<TextureObject> textures) {
 
 
     for (auto &textureObj : textures) { // I can't remember the other syntax for this with begin and end
-        std::cout << textures[0].texture << textures[1].texture << std::endl;
+        //std::cout << textures[0].texture << textures[1].texture << std::endl;
         glBindTexture(GL_TEXTURE_2D, textureObj.texture);
         glm::mat4 transform = glm::mat4(1.0f);
         transform = glm::translate(transform, textureObj.coords);

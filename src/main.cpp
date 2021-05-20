@@ -1,7 +1,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <GameStateManager.h>
-#include <GameState.h>
+#include <GameStateManager.h>  // organizational system for includes
+#include <GameState.h>  // alphabetize, standard libraries, then libraries/headers, my header files
 #include <InputProcessor.h>
 #include <connection.h>
 #include <renderer.h>
@@ -16,13 +16,15 @@
 
 #include <iostream>
 
+// HOW DO I COUT AN ENUM? - GAME STATE MANAGER LINE 39
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
-
+constexpr unsigned int SCR_WIDTH = 800;
+constexpr unsigned int SCR_HEIGHT = 600; //constexpr preferable becasue known at compile time - ultra optimized - optimizer friendly
+                                         //constexpr functions are run at complie - value inserted inline
 void clear() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -36,7 +38,7 @@ int main()
         std::cin >> localPlayer;
         break;
     }
-    std::cout << "Netplay? [y/n]" << '\n';
+    std::cout << "Netplay? [y/n]" << '\n';  // use cin.get to get one character
     int netplaySession;
     while (true) {
         std::cin >> netplaySession;
@@ -44,10 +46,8 @@ int main()
     }
 
     GameStateManager gameStateManager(localPlayer);
-    std::cout << "Aevent" << 1 << std::endl;
 
     InputProcessor inputProcessor;
-    std::cout << "Aevent" << 2 << std::endl;
 
     std::cout << netplaySession << "\n";
     if (netplaySession == 1) {

@@ -4,7 +4,8 @@
 #include <GameState.h>
 #include <map>
 #include <character.h>
-#include <entity.h>
+#include <enum-trees.h>
+#include <hitbox.h>
 
 class GameStateManager
 {
@@ -16,27 +17,37 @@ public:
 	float groundHeight;
 	float wallDistance;
 	void incrementFrameCount();
+	void initTheBigMap();
+	std::unordered_map<int, std::unordered_map<int, attackData>> MasterMap;
 	std::vector<GameState> gameStateHistory; //undordered map of atomic GameStates
 	GameState getMostRecentState();
-	void performRollbackOperation(GameState remoteSessionState);
-	void captureGameState(std::string input);
+	void performRollbackOperation(const GameState &remoteSessionState); // <= just take stuff by const reference
+	void captureGameState(const std::string &input);  // <= for all standard strings to not copy them, take by reference
 	void handleAirMovement(character& player, std::string input, int playerIdentifier);
 	bool ecbDoesOverlap(character& player1, character& player2);
 	void ecbPushOut(character& player1, character& player2);
 	void wallCheck(character& player1);
+	void handleAttackInput(character& player, std::string input);
+	void handleAttackEnd(character& player);
+	void resolveHits(character& player1, character& player2);
+	bool hitBoxOverlapsECB(character& target, character& owner, attackData attack);
+	void generateHitboxes(character& player);
+	bool isAttacking(States state);
+	void putInHitStun(character& player, attackData attack);
 	GameState determineNextState(GameState lastState, std::string p1i, std::string p2i);
-	std::map<std::string, character> charactersObj;
+	std::map<std::string, character> charactersObj; // make unordered  <= make the key an int
+	std::vector<hitbox> hitboxArr;
 	bool checkIsOnGround(character &character);
 	float gravity;
 	float friction;
-	enum state {
-		stand,
-		walkForward,
-		walkBack,
-		jumpSquat,
-		jumpUp,
-		jumpForward,
-		jumpBack,
-		land
-	};
+	//enum state {
+	//	stand,
+	//	walkForward,
+	//	walkBack,
+	//	jumpSquat,
+	//	jumpUp,
+	//	jumpForward,
+	//	jumpBack,
+	//	land
+	//};
 };

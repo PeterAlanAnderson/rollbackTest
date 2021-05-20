@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <enum-trees.h>
 
 struct position {
 	float posX;
@@ -15,8 +16,8 @@ class character
 {
 public:
 	character();
-	character(std::string a_name, float a_ecbHeight, float a_ecbWidth, float a_mass, float a_jumpPower, float a_speed);
-	std::string name;
+	character(int a_player, float a_ecbHeight, float a_ecbWidth, float a_mass, float a_jumpPower, float a_speed);
+	int player;
 	position position;
 	dimensions ecb;
 	dimensions hurtbox;
@@ -28,7 +29,7 @@ public:
 	int stateFrames;
 	float health;
 	bool isFacingRight;
-	int state;
+	States state;
 
 };
 
