@@ -21,8 +21,8 @@ public:
 	std::unordered_map<int, std::unordered_map<int, attackData>> MasterMap;
 	std::vector<GameState> gameStateHistory; //undordered map of atomic GameStates
 	GameState getMostRecentState();
-	void performRollbackOperation(const GameState &remoteSessionState); // <= just take stuff by const reference
-	void captureGameState(const std::string &input);  // <= for all standard strings to not copy them, take by reference
+	void performRollbackOperation(const GameState& remoteSessionState); // <= just take stuff by const reference
+	void captureGameState(const std::string& input);  // <= for all standard strings to not copy them, take by reference
 	void handleAirMovement(character& player, std::string input, int playerIdentifier);
 	bool ecbDoesOverlap(character& player1, character& player2);
 	void ecbPushOut(character& player1, character& player2);
@@ -37,7 +37,7 @@ public:
 	GameState determineNextState(GameState lastState, std::string p1i, std::string p2i);
 	std::map<std::string, character> charactersObj; // make unordered  <= make the key an int
 	std::vector<hitbox> hitboxArr;
-	bool checkIsOnGround(character &character);
+	bool checkIsOnGround(character& character);
 	float gravity;
 	float friction;
 	//enum state {

@@ -17,16 +17,17 @@
 #include <iostream>
 
 // HOW DO I COUT AN ENUM? - GAME STATE MANAGER LINE 39
+// overload cout insertion operator for enum
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow* window);
+void framebuffer_size_callback(GLFWwindow* const window, const int width, const int height);  // const window means can't point to new address
+void processInput(GLFWwindow* window);  //DO SAME AS 22 w/ const
 
 // settings
 constexpr unsigned int SCR_WIDTH = 800;
 constexpr unsigned int SCR_HEIGHT = 600; //constexpr preferable becasue known at compile time - ultra optimized - optimizer friendly
                                          //constexpr functions are run at complie - value inserted inline
 void clear() {
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);  // I can set the clear color once - so this line can go
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
@@ -80,7 +81,7 @@ int main()
     }
     std::cout << "Aevent" << 4 << std::endl;
 
-    
+
     std::cout << "Aevent" << 5 << std::endl;
 
     glfwMakeContextCurrent(window);
@@ -139,7 +140,7 @@ void processInput(GLFWwindow* window)
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void framebuffer_size_callback(GLFWwindow* const window, const int width, const int height)
 {
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.

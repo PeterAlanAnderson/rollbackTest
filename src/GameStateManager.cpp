@@ -15,7 +15,7 @@ GameStateManager::GameStateManager() {
 }
 GameStateManager::GameStateManager(int player) {
 	initTheBigMap();
-	localPlayer = player;
+	this->localPlayer = player;
 	frameCount = 0;
 	groundHeight = -0.7;
 	wallDistance = -1.0;
@@ -47,9 +47,9 @@ GameState GameStateManager::getMostRecentState() {
 	return gameStateHistory.front();
 }
 
-void GameStateManager::performRollbackOperation(const GameState &remoteSessionState) {}
+void GameStateManager::performRollbackOperation(const GameState& remoteSessionState) {}
 
-void GameStateManager::captureGameState(const std::string &input) {
+void GameStateManager::captureGameState(const std::string& input) {
 	GameState lastState = gameStateHistory.front();
 	std::string p1i = localPlayer == 1 ? input : lastState.p2Input;
 	std::string p2i = localPlayer == 2 ? input : lastState.p1Input;
@@ -113,7 +113,7 @@ GameState GameStateManager::determineNextState(GameState lastState, std::string 
 	//if (p2i == "d") lastState.p2CenterX += 0.003;
 	GameState nextState(player1.position.posX, player1.position.posY, 0.0f, player1.isFacingRight, player1.state, player1.stateFrames, "x", player2.position.posX, player2.position.posY, 0.0f, player2.isFacingRight, player2.state, player2.stateFrames, "x", frameCount, true);
 	//std::cout << "FROM STATE OBJ: " << nextState.p1State << std::endl;
-	std::cout << "VERY END OF STATE EVAL " << static_cast<int>(player1.state) << " "<< player1.stateFrames << std::endl;
+	std::cout << "VERY END OF STATE EVAL " << static_cast<int>(player1.state) << " " << player1.stateFrames << std::endl;
 	return nextState;
 }
 
@@ -121,11 +121,11 @@ void GameStateManager::incrementFrameCount() {
 	frameCount++;
 }
 
-bool GameStateManager::checkIsOnGround(character &character) {
+bool GameStateManager::checkIsOnGround(character& character) {
 	return character.ecb.height + groundHeight >= character.position.posY;
 }
 
-void GameStateManager::handleAirMovement(character &player, std::string input, int playerIdentifier) {
+void GameStateManager::handleAirMovement(character& player, std::string input, int playerIdentifier) {
 	if (!checkIsOnGround(player)) {
 		player.vMomentum -= gravity;
 	}
@@ -178,7 +178,7 @@ void GameStateManager::handleAirMovement(character &player, std::string input, i
 }
 
 bool GameStateManager::ecbDoesOverlap(character& player1, character& player2) {
-	if (player1.position.posX + player1.ecb.width + player2.ecb.width > player2.position.posX ) {
+	if (player1.position.posX + player1.ecb.width + player2.ecb.width > player2.position.posX) {
 		//std::cout << "X does overlap" << player1.position.posX << " " << player2.position.posX << " " << player1.ecb.width << std::endl;
 		float diff = std::abs(player1.position.posY - player2.position.posY);
 		if (diff < player1.ecb.height + player2.ecb.height) {
@@ -202,18 +202,18 @@ void GameStateManager::wallCheck(character& player) {
 		player.position.posX = 2 - player.ecb.width;
 	}
 	if (player.position.posX - player.ecb.width < 0) {
-		player.position.posX = 0  + player.ecb.width;
+		player.position.posX = 0 + player.ecb.width;
 	}
 }
 
 void GameStateManager::handleAttackInput(character& player, std::string input) {
-	if (input == "y"  && !isAttacking(player.state)) {
+	if (input == "y" && !isAttacking(player.state)) {
 		player.state = States::fiveA;
 		player.stateFrames = 1;
 		std::cout << "PLAYER IS ATTACKING " << static_cast<int>(player.state) << std::endl;
 	}
 }
-	
+
 void GameStateManager::resolveHits(character& player1, character& player2) {
 	for (auto& box : hitboxArr) {
 		attackData attack = MasterMap[static_cast<int>(CharactersEnum::debugMan)][static_cast<int>(box.attack)];
@@ -296,4 +296,3 @@ void GameStateManager::initTheBigMap() {
 //	blockStunAir
 //};
 
-	

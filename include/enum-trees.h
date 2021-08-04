@@ -18,7 +18,7 @@ struct attackData {
 	float hitKBV;
 	int hitStunFrames;
 	int damage;
-	attackData(){}
+	attackData() {}
 	attackData(
 		int a_startup,
 		int a_active,
@@ -75,6 +75,7 @@ enum class States {
 	blockStunAir,
 	attacksStart,
 	fiveA,
+	count
 };
 #ifndef THEBIGMAP
 #define THEBIGMAP

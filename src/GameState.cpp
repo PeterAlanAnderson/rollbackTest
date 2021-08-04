@@ -2,9 +2,9 @@
 #include <enum-trees.h>
 
 GameState::GameState(
-	float p1x, 
-	float p1y, 
-	float p1r, 
+	float p1x,
+	float p1y,
+	float p1r,
 	bool p1fr,
 	States a_p1State,
 	int a_p1StateFrames,
@@ -15,14 +15,14 @@ GameState::GameState(
 	bool p2fr,		// unsigned short gives 16 bits
 	States a_p2State,
 	int a_p2StateFrames,
-	std::string p2i, 
-	int frame, 
+	std::string p2i,
+	int frame,
 	bool remoteInputs
 ) {
 	p1CenterX = p1x;			// member initializer list
 	p1CenterY = p1y;
 	p1Rotation = p1r;
-	p1FacingRight = p1fr;		
+	p1FacingRight = p1fr;
 	p1State = a_p1State;
 	p1StateFrames = a_p1StateFrames;
 	p1Input = p1i;

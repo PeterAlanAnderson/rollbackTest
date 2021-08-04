@@ -7,17 +7,17 @@
 #include <functional>
 #include <GameStateManager.h>
 
-typedef websocketpp::server<websocketpp::config::asio> server;
-typedef websocketpp::client<websocketpp::config::asio_client> client;
+typedef websocketpp::server<websocketpp::config::asio> Server;
+typedef websocketpp::client<websocketpp::config::asio_client> Client;
 
 class connection {
 public:
-    connection(int connectionType, GameStateManager &gameStateManager);
+    connection(int connectionType, GameStateManager& gameStateManager);
     GameStateManager gameStateManager;
     void init();
     int type;
-    server server;
-    client client;
+    Server server;
+    Client client;
     void startClient();
     void startServer();
     void connectionOpen(websocketpp::connection_hdl hdl);
