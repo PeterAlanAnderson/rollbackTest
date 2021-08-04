@@ -18,9 +18,6 @@
 #include <string.h>
 #include <sys/types.h>
 #include <updServer.h>
-#include <winsock2.h>
-#include <Ws2tcpip.h>
-#include <windows.h>
 
 #include <iostream>
 
@@ -29,7 +26,7 @@
 
 #pragma comment(lib,"ws2_32.lib")
 
-connection::connection(int connType, GameStateManager &gsm) {
+connection::connection(int connType, GameStateManager& gsm) {
 	gameStateManager = gsm;
 	type = connType;
 }

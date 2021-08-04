@@ -7,21 +7,21 @@ class GameState
 {
 public:
 	GameState(
-		float p1x, 
-		float p1y, 
-		float p1r, 
+		float p1x,
+		float p1y,
+		float p1r,
 		bool p1fr,
 		States a_p1State,
 		int a_p1StateFrames,
-		std::string p1i, 
-		float p2x, 
-		float p2y, 
-		float p2r, 
+		std::string p1i,
+		float p2x,
+		float p2y,
+		float p2r,
 		bool p2fr,
 		States a_p2State,
 		int a_p2StateFrames,
-		std::string p2i, 
-		int frame, 
+		std::string p2i,
+		int frame,
 		bool allInputs);
 
 	float p1CenterX;

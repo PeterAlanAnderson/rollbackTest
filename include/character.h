@@ -2,12 +2,12 @@
 #include <string>
 #include <enum-trees.h>
 
-struct position {
+struct Position {
 	float posX;
 	float posY;
 };
 
-struct dimensions {
+struct Dimensions {
 	float height;
 	float width;
 };
@@ -18,9 +18,9 @@ public:
 	character();
 	character(int a_player, float a_ecbHeight, float a_ecbWidth, float a_mass, float a_jumpPower, float a_speed);
 	int player;
-	position position;
-	dimensions ecb;
-	dimensions hurtbox;
+	Position position;
+	Dimensions ecb;
+	Dimensions hurtbox;
 	float mass;
 	float jumpPower;
 	float speed;

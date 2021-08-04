@@ -107,7 +107,7 @@ void renderer::draw(std::vector<TextureObject> textures) {
     glActiveTexture(GL_TEXTURE0);
 
 
-    for (auto &textureObj : textures) { // I can't remember the other syntax for this with begin and end
+    for (auto& textureObj : textures) { // I can't remember the other syntax for this with begin and end
         //std::cout << textures[0].texture << textures[1].texture << std::endl;
         glBindTexture(GL_TEXTURE_2D, textureObj.texture);
         glm::mat4 transform = glm::mat4(1.0f);

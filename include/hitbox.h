@@ -7,12 +7,12 @@ public:
 	int owner;
 	CharactersEnum character;
 	States attack;
-	
+
 	hitbox(int a_owner, CharactersEnum a_character, States a_attack) {
 		owner = a_owner;
 		character = a_character;
 		attack = a_attack;
-		
+
 	};
 };
 

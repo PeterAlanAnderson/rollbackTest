@@ -22,25 +22,25 @@ public:
         , m_messages()
     {}
 
-    void on_open(client* c, websocketpp::connection_hdl hdl) {
+    void on_open(Client* c, websocketpp::connection_hdl hdl) {
         std::cout << "CONNECTION OPEN" << '\n';
         m_status = "Open";
 
-        client::connection_ptr con = c->get_con_from_hdl(hdl);
+        Client::connection_ptr con = c->get_con_from_hdl(hdl);
         m_server = con->get_response_header("Server");
     }
 
-    void on_fail(client* c, websocketpp::connection_hdl hdl) {
+    void on_fail(Client* c, websocketpp::connection_hdl hdl) {
         m_status = "Failed";
 
-        client::connection_ptr con = c->get_con_from_hdl(hdl);
+        Client::connection_ptr con = c->get_con_from_hdl(hdl);
         m_server = con->get_response_header("Server");
         m_error_reason = con->get_ec().message();
     }
 
-    void on_close(client* c, websocketpp::connection_hdl hdl) {
+    void on_close(Client* c, websocketpp::connection_hdl hdl) {
         m_status = "Closed";
-        client::connection_ptr con = c->get_con_from_hdl(hdl);
+        Client::connection_ptr con = c->get_con_from_hdl(hdl);
         std::stringstream s;
         s << "close code: " << con->get_remote_close_code() << " ("
             << websocketpp::close::status::get_string(con->get_remote_close_code())
@@ -48,7 +48,7 @@ public:
         m_error_reason = s.str();
     }
 
-    void on_message(websocketpp::connection_hdl, client::message_ptr msg) {
+    void on_message(websocketpp::connection_hdl, Client::message_ptr msg) {
         if (msg->get_opcode() == websocketpp::frame::opcode::text) {
             m_messages.push_back("<< " + msg->get_payload());
         }

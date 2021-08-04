@@ -2,7 +2,7 @@ workspace "RollbackTest"
     language "C++"
     cppdialect "C++17"
     configurations {"Debug", "Release"}
-    platforms {"LinuxARM", "LinuxX86", "LinuxX64", "WindowsARM", "WindowsX86", "WindowsX64"}
+    platforms {"LinuxX64", "LinuxX86", "LinuxARM", "WindowsARM", "WindowsX86", "WindowsX64"}
     startproject "RollbackTest"
 
     flags {"MultiProcessorCompile"}
@@ -16,11 +16,15 @@ workspace "RollbackTest"
         buildoptions {"/W4"}
         toolset "msc"
         includedirs {"C:/local/boost_1_75_0/", "C:/SDK/GLFW/include/"}
-        libdirs {"C:/local/boost_1_75_0/stage/lib/", "C:/SDK/GLFW/lib-vc2019/"}
+        libdirs {"C:/local/boost_1_75_0/lib64-msvc-14.2", "C:/SDK/GLFW/lib-vc2019/"}
 
     filter "action:not vs*"
         toolset "gcc"
-        buildoptions {"-Wextra", "-Wnon-virtual-dtor", "-Winline", "-Wunreachable-code", "-Wshadow", "-Wconversion", "-Wno-switch", "-Wno-unused-variable"}
+
+    filter {"action:not vs*", "files:not glad.c"}
+        buildoptions {"-Wpedantic", "-Wextra", "-Wnon-virtual-dtor", "-Winline", "-Wunreachable-code", "-Wshadow", "-Wconversion", "-Wno-switch", "-Wno-unused-variable", "-Wold-style-cast",
+        	      "-Wcast-align", "-Wunused", "-Woverloaded-virtual", "-Wsign-conversion", "-Wduplicated-cond", "-Wduplicated-branches", "-Wlogical-op", "-Wnull-dereference", "-Wuseless-cast",
+        	      "-Wdouble-promotion"}
 
     filter "platforms:Linux*"
         system "linux"
@@ -36,8 +40,6 @@ workspace "RollbackTest"
 
     filter "configurations:Debug"
         symbols "On"
-        buildoptions {"-pg", "-fsanitize=address", "-fsanitize=leak", "-static-libasan"}
-        linkoptions {"-pg", "-fsanitize=address", "-fsanitize=leak", "-static-libasan"}
 
     filter "configurations:Release"
         optimize "On"
@@ -46,10 +48,6 @@ workspace "RollbackTest"
         kind "ConsoleApp"
         location "%{wks.location}"
         targetdir "%{prj.location}/bin/%{cfg.platform}/%{cfg.buildcfg}"
-
-        filter "action:not vs*"
-		    pchheader "RollbackTestpch.hpp"
-        filter {}
 
         files {"%{prj.location}/src/**.cpp", "%{prj.location}/src/**.c", "%{prj.location}/include/**.hpp", "%{prj.location}/include/**.h", "%{prj.location}/premake5.lua"}
 
