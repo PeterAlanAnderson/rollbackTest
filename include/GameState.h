@@ -3,9 +3,8 @@
 #include <iostream>
 #include <enum-trees.h>
 
-class GameState
+struct GameState  // TODO should be struct
 {
-public:
 	GameState(
 		float p1x,
 		float p1y,

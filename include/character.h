@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+
 #include <enum-trees.h>
 
 struct Position {
@@ -12,9 +13,9 @@ struct Dimensions {
 	float width;
 };
 
-class character
+struct character  // TODO capitalize class name
+					// TODO struct instead of class
 {
-public:
 	character();
 	character(int a_player, float a_ecbHeight, float a_ecbWidth, float a_mass, float a_jumpPower, float a_speed);
 	int player;

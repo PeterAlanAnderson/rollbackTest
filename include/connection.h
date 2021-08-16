@@ -1,10 +1,12 @@
 #pragma once
+#include <functional>
+
 #include <boost/asio.hpp>
 #include <websocketpp/config/asio_no_tls_client.hpp>
 #include <websocketpp/config/asio_no_tls.hpp>
 #include <websocketpp/client.hpp>
 #include <websocketpp/server.hpp>
-#include <functional>
+
 #include <GameStateManager.h>
 
 typedef websocketpp::server<websocketpp::config::asio> Server;

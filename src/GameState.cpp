@@ -1,7 +1,9 @@
 #include "GameState.h"
 #include <enum-trees.h>
 
-GameState::GameState(
+GameState::GameState(  // TODO member initializer list
+	// TODO const primitives
+	// TODO take variables by const reference if they're bigger than primites
 	float p1x,
 	float p1y,
 	float p1r,

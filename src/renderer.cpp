@@ -9,7 +9,8 @@
 #include <iostream>
 #include <GameState.h>
 #include <vector>
-#include <math.h>
+#include <cmath>
+#include <array>
 
 renderer::renderer(GLFWwindow* a_window) {
 
@@ -22,14 +23,14 @@ renderer::renderer(GLFWwindow* a_window) {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glBlendEquation(GL_FUNC_ADD);
 
-    float vertices[] = {
+    constexpr std::array<float, 20> vertices = {
         // positions          // texture coords
          0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
          0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
         -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
         -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left 
     };
-    unsigned int indices[] = {
+    constexpr std::array<unsigned int, 6> indices = {
         0, 1, 3, // first triangle
         1, 2, 3  // second triangle
     };
@@ -41,10 +42,10 @@ renderer::renderer(GLFWwindow* a_window) {
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices.data(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices.data(), GL_STATIC_DRAW);
 
     // position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
@@ -61,7 +62,7 @@ renderer::renderer(GLFWwindow* a_window) {
 }
 
 
-void renderer::generateTexturesAndDraw(GameState gameState) {
+void renderer::generateTexturesAndDraw(const GameState &gameState) {
     //std::cout << "STATE FRAMES: " << gameState.p1StateFrames << " " << gameState.p2StateFrames << " \n";
     //std::cout << "start \n";
 
@@ -100,7 +101,7 @@ void renderer::generateTexturesAndDraw(GameState gameState) {
     draw(textureObjects);
 }
 
-void renderer::draw(std::vector<TextureObject> textures) {
+void renderer::draw(const std::vector<TextureObject> &textures) {
 
     ourShader.use();
     unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
@@ -121,9 +122,4 @@ void renderer::draw(std::vector<TextureObject> textures) {
 
     }
 
-}
-
-void renderer::clear() {
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
 }

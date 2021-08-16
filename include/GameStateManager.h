@@ -13,12 +13,12 @@ public:
 	GameStateManager();
 	GameStateManager(int player);
 	int localPlayer;
-	int frameCount;
+	unsigned int frameCount;
 	float groundHeight;
 	float wallDistance;
 	void incrementFrameCount();
 	void initTheBigMap();
-	std::unordered_map<int, std::unordered_map<int, attackData>> MasterMap;
+	std::unordered_map<int, std::unordered_map<int, attackData>> MasterMap;  // This should be lowercase  // also use this->
 	std::vector<GameState> gameStateHistory; //undordered map of atomic GameStates
 	GameState getMostRecentState();
 	void performRollbackOperation(const GameState& remoteSessionState); // <= just take stuff by const reference
@@ -35,7 +35,7 @@ public:
 	bool isAttacking(States state);
 	void putInHitStun(character& player, attackData attack);
 	GameState determineNextState(GameState lastState, std::string p1i, std::string p2i);
-	std::map<std::string, character> charactersObj; // make unordered  <= make the key an int
+	std::map<std::string, character> charactersObj; // make array of size 2
 	std::vector<hitbox> hitboxArr;
 	bool checkIsOnGround(character& character);
 	float gravity;

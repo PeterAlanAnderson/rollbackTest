@@ -1,33 +1,35 @@
+#include <iostream>
+
+#include <boost/asio.hpp>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include <websocketpp/client.hpp>
+#include <websocketpp/config/asio_no_tls_client.hpp>
+
 #include <GameStateManager.h>  // organizational system for includes
 #include <GameState.h>  // alphabetize, standard libraries, then libraries/headers, my header files
 #include <InputProcessor.h>
 #include <connection.h>
 #include <renderer.h>
-#include <boost/asio.hpp>
-#include <websocketpp/client.hpp>
-#include <websocketpp/config/asio_no_tls_client.hpp>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 #include <shader.h>
 
-#include <iostream>
 
 // HOW DO I COUT AN ENUM? - GAME STATE MANAGER LINE 39
 // overload cout insertion operator for enum
 
 void framebuffer_size_callback(GLFWwindow* const window, const int width, const int height);  // const window means can't point to new address
-void processInput(GLFWwindow* window);  //DO SAME AS 22 w/ const
+void processInput(GLFWwindow* const window);  //DO SAME AS 22 w/ const
 
 // settings
 constexpr unsigned int SCR_WIDTH = 800;
 constexpr unsigned int SCR_HEIGHT = 600; //constexpr preferable becasue known at compile time - ultra optimized - optimizer friendly
                                          //constexpr functions are run at complie - value inserted inline
 void clear() {
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);  // I can set the clear color once - so this line can go
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
@@ -55,11 +57,10 @@ int main()
         connection connection(localPlayer, gameStateManager);
         connection.init();
     }
-    float frameLimiter = 0.0166666666666666666;
-    float lastTime = 0.0;
+    constexpr float frameLimiter = 0.0166666666666666666;
+    double lastTime = 0.0;
     // glfw: initialize and configure
     // ------------------------------
-    std::cout << "Aevent" << 3 << std::endl;
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -72,39 +73,40 @@ int main()
 
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
-    if (window == NULL)
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", nullptr, nullptr);
+    if (window == nullptr)
     {
-        std::cout << "Failed to create GLFW window" << std::endl;
+        std::cerr << "Failed to create GLFW window\n";
         glfwTerminate();
         return -1;
     }
-    std::cout << "Aevent" << 4 << std::endl;
-
-
-    std::cout << "Aevent" << 5 << std::endl;
 
     glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(window, [](GLFWwindow* const window, const int width, const int height) -> void // return type not required, but good practice
+    {
+        glViewport(0, 0, width, height);
+    });
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
     {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+        std::cout << "Failed to initialize GLAD \n";
         return -1;
     }
-    renderer renderer(window);
+    renderer renderer(window);  // TODO this is a class, so should be capitalized
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
     {
+        glfwPollEvents();
         // input
         // -----
         processInput(window);
         inputProcessor.evaluateInput(window);
-        float nowTime = glfwGetTime();
+        //float nowTime = glfwGetTime();
         if (glfwGetTime() >= lastTime + frameLimiter) {
             lastTime += frameLimiter;
             gameStateManager.captureGameState(inputProcessor.getLocalAction());
@@ -113,14 +115,13 @@ int main()
 
         // render
         // ------
-        renderer.clear();
-        GameState gameState = gameStateManager.getMostRecentState();
-        renderer.generateTexturesAndDraw(gameState);
+        glClear(GL_COLOR_BUFFER_BIT);
+        renderer.generateTexturesAndDraw(gameStateManager.getMostRecentState());  // TODO -- copying in a game state, can be more efficient
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
-        glfwPollEvents();
+    
     }
 
 
@@ -132,7 +133,7 @@ int main()
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow* window)
+void processInput(GLFWwindow* const window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
@@ -142,8 +143,6 @@ void processInput(GLFWwindow* window)
 // ---------------------------------------------------------------------------------------------
 void framebuffer_size_callback(GLFWwindow* const window, const int width, const int height)
 {
-    // make sure the viewport matches the new window dimensions; note that width and 
-    // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
 }
 

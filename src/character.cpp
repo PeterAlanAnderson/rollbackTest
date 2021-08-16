@@ -1,7 +1,7 @@
 #include "character.h"
 #include <enum-trees.h>
 
-character::character() {
+character::character() {	// TODO members should be const, use member initializer list
 	player = 0;
 	ecb.height = 0.0f;
 	ecb.width = 0.0f;

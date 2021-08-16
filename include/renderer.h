@@ -1,5 +1,4 @@
 #pragma once
-#include "renderer.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <stb/stb_image.h>
@@ -22,13 +21,12 @@ class renderer
 {
 public:
 	renderer(GLFWwindow* a_window);
-	void draw(std::vector<TextureObject> textures);
-	void clear();
+	void draw(const std::vector<TextureObject> &textures);  //TODO should take in by reference
 	unsigned int VBO, VAO, EBO;
 	GLFWwindow* window;
 	Shader ourShader = Shader("3.3.shader.vs", "3.3.shader.fs");
 	animationController animController = animationController(1, 1);
-	void generateTexturesAndDraw(GameState gameState);
+	void generateTexturesAndDraw(const GameState &gameState);
 };
 
 

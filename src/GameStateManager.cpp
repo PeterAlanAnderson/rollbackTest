@@ -9,7 +9,7 @@
 #include <big-map.h>
 #include <hitbox.h>
 
-GameStateManager::GameStateManager() {
+GameStateManager::GameStateManager() {  // Don't need now
 	initBigMap();
 	frameCount = 0;
 }
@@ -23,11 +23,13 @@ GameStateManager::GameStateManager(int player) {
 	friction = 0.0001;
 
 	gameStateHistory.reserve(100);
-	GameState defaultState{ 0.5f, 0.0f, 0.0f, true, States::stand, 0, "x", 1.5f, 0.0f, 0.0f, false, States::stand, 0, "x", 0, true };
-	gameStateHistory.insert(gameStateHistory.begin(), defaultState);
+	// GameState defaultState{ 0.5f, 0.0f, 0.0f, true, States::stand, 0, "x", 1.5f, 0.0f, 0.0f, false, States::stand, 0, "x", 0, true };
+	// gameStateHistory.insert(gameStateHistory.begin(), defaultState);
+	gameStateHistory.emplace(gameStateHistory.begin(), 0.5f, 0.0f, 0.0f, true, States::stand, 0, "x", 1.5f, 0.0f, 0.0f, false, States::stand, 0, "x", 0, true);
 	//std::cout << "INITIAL GAME STATE P1 state P2 state: " << gameStateHistory[0].p1State << gameStateHistory[0].p2State << "\n";
 
-	character player1(1, 0.15f, 0.19f, 1.0f, 0.06f, 1.0f);
+	character player1(1, 0.15f, 0.19f, 1.0f, 0.06f, 1.0f);  // TODO this constructor should take in a position so likes 38-41 could be eliminated
+																	// but all this can be done in the game state manager initializer list
 	//charactersObj.insert(std::make_pair("player1", player1));
 	charactersObj["player1"] = player1;
 
@@ -50,12 +52,14 @@ GameState GameStateManager::getMostRecentState() {
 void GameStateManager::performRollbackOperation(const GameState& remoteSessionState) {}
 
 void GameStateManager::captureGameState(const std::string& input) {
-	GameState lastState = gameStateHistory.front();
+	GameState& lastState = gameStateHistory.front();
 	std::string p1i = localPlayer == 1 ? input : lastState.p2Input;
 	std::string p2i = localPlayer == 2 ? input : lastState.p1Input;
 	GameState nextState = determineNextState(lastState, p1i, p2i);
-	incrementFrameCount();
-	if (gameStateHistory.size() == gameStateHistory.max_size()) {
+	frameCount++;
+	std::cout << "MAX SIZE:" << gameStateHistory.max_size() << '\n';
+	std::cout << "CURRENT SIZE:" << gameStateHistory.size() << '\n';
+	if (gameStateHistory.size() == 240) {
 		gameStateHistory.pop_back();
 	}
 	gameStateHistory.insert(gameStateHistory.begin(), nextState);
@@ -115,10 +119,6 @@ GameState GameStateManager::determineNextState(GameState lastState, std::string 
 	//std::cout << "FROM STATE OBJ: " << nextState.p1State << std::endl;
 	std::cout << "VERY END OF STATE EVAL " << static_cast<int>(player1.state) << " " << player1.stateFrames << std::endl;
 	return nextState;
-}
-
-void GameStateManager::incrementFrameCount() {
-	frameCount++;
 }
 
 bool GameStateManager::checkIsOnGround(character& character) {
@@ -271,10 +271,17 @@ void GameStateManager::putInHitStun(character& player, attackData attack) {
 
 
 
-void GameStateManager::initTheBigMap() {
-	std::unordered_map<int, attackData> debugManAttacks;
-	debugManAttacks[static_cast<int>(States::fiveA)] = attackData(10, 5, 10, 10, 15, 0.05f, 0.05f, 0.05f, 0.0f, 0.002f, 0.0f, 0.05f, 0.0f, 30, 10);
-	MasterMap[static_cast<int>(CharactersEnum::debugMan)] = debugManAttacks;
+//void gamestatemanager::initthebigmap() {
+//	std::unordered_map<int, attackdata> debugmanattacks;
+//	debugmanattacks[static_cast<int>(states::fivea)] = attackdata(10, 5, 10, 10, 15, 0.05f, 0.05f, 0.05f, 0.0f, 0.002f, 0.0f, 0.05f, 0.0f, 30, 10);	
+//	// raw arrays are faster
+//	// use array instead
+//	mastermap[static_cast<int>(charactersenum::debugman)] = debugmanattacks;
+//}
+
+void GameStateManager::initTheBigMap() {  // Vector of vectors, not map of maps
+	MasterMap[static_cast<int>(CharactersEnum::debugMan)][static_cast<int>(States::fiveA)] = attackData(10, 5, 10, 10, 15, 0.05f, 0.05f, 0.05f, 0.0f, 0.002f, 0.0f, 0.05f, 0.0f, 30, 10);
+	// put all attack data into a JSON file or some such, pull in attack data by reading lines and parsing/ creating attackData structs
 }
 
 
