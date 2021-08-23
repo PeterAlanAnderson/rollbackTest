@@ -1,3 +1,4 @@
+#include <bitset>
 #include <iostream>
 
 #include <boost/asio.hpp>
@@ -19,8 +20,8 @@
 #include <shader.h>
 
 
-// HOW DO I COUT AN ENUM? - GAME STATE MANAGER LINE 39
 // overload cout insertion operator for enum
+// TODO MEMBER INITIALIZER LIST SHOULD HAVE PARENS, NOT CURLY BRACES
 
 void framebuffer_size_callback(GLFWwindow* const window, const int width, const int height);  // const window means can't point to new address
 void processInput(GLFWwindow* const window);  //DO SAME AS 22 w/ const
@@ -35,6 +36,10 @@ void clear() {
 
 int main()
 {
+    unsigned char wumbo = '\n';
+    std::bitset<8> set = wumbo;
+    std::cout << set << " THIS IS SET\n";
+
     std::cout << "Player 1 or 2? [1/2] " << '\n';
     int localPlayer;
     while (true) {
@@ -54,7 +59,7 @@ int main()
 
     std::cout << netplaySession << "\n";
     if (netplaySession == 1) {
-        connection connection(localPlayer, gameStateManager);
+        Connection connection(localPlayer, gameStateManager);
         connection.init();
     }
     constexpr float frameLimiter = 0.0166666666666666666;
@@ -94,7 +99,7 @@ int main()
         std::cout << "Failed to initialize GLAD \n";
         return -1;
     }
-    renderer renderer(window);  // TODO this is a class, so should be capitalized
+    Renderer renderer(window);  // TODO this is a class, so should be capitalized
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
     // render loop

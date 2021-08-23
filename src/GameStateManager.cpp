@@ -13,27 +13,30 @@ GameStateManager::GameStateManager() {  // Don't need now
 	initBigMap();
 	frameCount = 0;
 }
-GameStateManager::GameStateManager(int player) {
+
+GameStateManager::GameStateManager(int player) : 
+	localPlayer{player},
+	frameCount{ 0 },
+	groundHeight{-0.7},
+	wallDistance{-1.0},
+	gravity{ 0.0019 },
+	friction{ 0.0001 }
+{
 	initTheBigMap();
-	this->localPlayer = player;
-	frameCount = 0;
-	groundHeight = -0.7;
-	wallDistance = -1.0;
-	gravity = 0.0019;
-	friction = 0.0001;
 
 	gameStateHistory.reserve(100);
 	// GameState defaultState{ 0.5f, 0.0f, 0.0f, true, States::stand, 0, "x", 1.5f, 0.0f, 0.0f, false, States::stand, 0, "x", 0, true };
 	// gameStateHistory.insert(gameStateHistory.begin(), defaultState);
-	gameStateHistory.emplace(gameStateHistory.begin(), 0.5f, 0.0f, 0.0f, true, States::stand, 0, "x", 1.5f, 0.0f, 0.0f, false, States::stand, 0, "x", 0, true);
+	const std::vector<Hitbox> emptyArr;
+	gameStateHistory.emplace(gameStateHistory.begin(), 0.5f, 0.0f, 0.0f, true, States::stand, 0, "x", 1.5f, 0.0f, 0.0f, false, States::stand, 0, "x", 0, true, emptyArr);
 	//std::cout << "INITIAL GAME STATE P1 state P2 state: " << gameStateHistory[0].p1State << gameStateHistory[0].p2State << "\n";
 
-	character player1(1, 0.15f, 0.19f, 1.0f, 0.06f, 1.0f);  // TODO this constructor should take in a position so likes 38-41 could be eliminated
+	Character player1(1, 0.15f, 0.19f, 1.0f, 0.06f, 1.0f);  // TODO this constructor should take in a position so likes 38-41 could be eliminated
 																	// but all this can be done in the game state manager initializer list
 	//charactersObj.insert(std::make_pair("player1", player1));
 	charactersObj["player1"] = player1;
 
-	character player2(2, 0.15f, 0.19f, 1.0f, 0.06f, 1.0f);
+	Character player2(2, 0.15f, 0.19f, 1.0f, 0.06f, 1.0f);
 	charactersObj["player2"] = player2;
 	//charactersObj.insert(std::make_pair("player2", player2));
 	charactersObj["player1"].position.posX = 0.5f;
@@ -67,8 +70,8 @@ void GameStateManager::captureGameState(const std::string& input) {
 }
 
 GameState GameStateManager::determineNextState(GameState lastState, std::string p1i, std::string p2i) {
-	character& player1 = charactersObj["player1"];
-	character& player2 = charactersObj["player2"];
+	Character& player1 = charactersObj["player1"];
+	Character& player2 = charactersObj["player2"];
 
 	//check for ending attack frames
 	if (isAttacking(player1.state)) handleAttackEnd(player1);
@@ -105,8 +108,8 @@ GameState GameStateManager::determineNextState(GameState lastState, std::string 
 	}
 
 	//check for ECB overlap
-	character& leftPlayer = player1.position.posX < player2.position.posX ? player1 : player2;
-	character& rightPlayer = player1.position.posX < player2.position.posX ? player2 : player1;
+	Character& leftPlayer = player1.position.posX < player2.position.posX ? player1 : player2;
+	Character& rightPlayer = player1.position.posX < player2.position.posX ? player2 : player1;
 	if (ecbDoesOverlap(leftPlayer, rightPlayer)) {
 		ecbPushOut(leftPlayer, rightPlayer);
 	}
@@ -115,17 +118,18 @@ GameState GameStateManager::determineNextState(GameState lastState, std::string 
 
 	//if (p2i == "a") lastState.p2CenterX -= 0.003;
 	//if (p2i == "d") lastState.p2CenterX += 0.003;
-	GameState nextState(player1.position.posX, player1.position.posY, 0.0f, player1.isFacingRight, player1.state, player1.stateFrames, "x", player2.position.posX, player2.position.posY, 0.0f, player2.isFacingRight, player2.state, player2.stateFrames, "x", frameCount, true);
+	// const std::vector<Hitbox> emptyArr;
+	GameState nextState(player1.position.posX, player1.position.posY, 0.0f, player1.isFacingRight, player1.state, player1.stateFrames, "x", player2.position.posX, player2.position.posY, 0.0f, player2.isFacingRight, player2.state, player2.stateFrames, "x", frameCount, true, hitboxArr);
 	//std::cout << "FROM STATE OBJ: " << nextState.p1State << std::endl;
 	std::cout << "VERY END OF STATE EVAL " << static_cast<int>(player1.state) << " " << player1.stateFrames << std::endl;
 	return nextState;
 }
 
-bool GameStateManager::checkIsOnGround(character& character) {
+bool GameStateManager::checkIsOnGround(Character& character) {
 	return character.ecb.height + groundHeight >= character.position.posY;
 }
 
-void GameStateManager::handleAirMovement(character& player, std::string input, int playerIdentifier) {
+void GameStateManager::handleAirMovement(Character& player, std::string input, int playerIdentifier) {
 	if (!checkIsOnGround(player)) {
 		player.vMomentum -= gravity;
 	}
@@ -177,7 +181,7 @@ void GameStateManager::handleAirMovement(character& player, std::string input, i
 	//std::cout << "STATE: " << player.state << " LASTSTATE: " << lastState << " " << player.stateFrames << " " << frameCount << std::endl;
 }
 
-bool GameStateManager::ecbDoesOverlap(character& player1, character& player2) {
+bool GameStateManager::ecbDoesOverlap(Character& player1, Character& player2) {
 	if (player1.position.posX + player1.ecb.width + player2.ecb.width > player2.position.posX) {
 		//std::cout << "X does overlap" << player1.position.posX << " " << player2.position.posX << " " << player1.ecb.width << std::endl;
 		float diff = std::abs(player1.position.posY - player2.position.posY);
@@ -189,7 +193,7 @@ bool GameStateManager::ecbDoesOverlap(character& player1, character& player2) {
 	return false;
 }
 
-void GameStateManager::ecbPushOut(character& player1, character& player2) {
+void GameStateManager::ecbPushOut(Character& player1, Character& player2) {
 	float overlap = player1.ecb.width + player2.ecb.width + player1.position.posX - player2.position.posX;
 	float pushBackP1Ratio = player1.mass / (player1.mass + player2.mass);
 	//std::cout << "OVERLAP " << pushBackP1Ratio << ", " << overlap << ", " << player1.position.posX << ", " << player2.position.posX << std::endl;
@@ -197,7 +201,7 @@ void GameStateManager::ecbPushOut(character& player1, character& player2) {
 	player2.position.posX += (overlap * (1 - pushBackP1Ratio)) / 3;
 }
 
-void GameStateManager::wallCheck(character& player) {
+void GameStateManager::wallCheck(Character& player) {
 	if (player.ecb.width + player.position.posX > 2) {
 		player.position.posX = 2 - player.ecb.width;
 	}
@@ -206,7 +210,7 @@ void GameStateManager::wallCheck(character& player) {
 	}
 }
 
-void GameStateManager::handleAttackInput(character& player, std::string input) {
+void GameStateManager::handleAttackInput(Character& player, std::string input) {
 	if (input == "y" && !isAttacking(player.state)) {
 		player.state = States::fiveA;
 		player.stateFrames = 1;
@@ -214,9 +218,9 @@ void GameStateManager::handleAttackInput(character& player, std::string input) {
 	}
 }
 
-void GameStateManager::resolveHits(character& player1, character& player2) {
+void GameStateManager::resolveHits(Character& player1, Character& player2) {
 	for (auto& box : hitboxArr) {
-		attackData attack = MasterMap[static_cast<int>(CharactersEnum::debugMan)][static_cast<int>(box.attack)];
+		AttackData attack = MasterMap[static_cast<int>(CharactersEnum::debugMan)][static_cast<int>(box.attack)];
 		if (box.owner != player1.player && hitBoxOverlapsECB(player1, player2, attack)) {
 			std::cout << "ATTACK IS HAPPENING \n";
 			putInHitStun(player1, attack);
@@ -229,16 +233,16 @@ void GameStateManager::resolveHits(character& player1, character& player2) {
 	return;
 }
 
-void GameStateManager::generateHitboxes(character& player) {
-	attackData activeAttack = MasterMap[static_cast<int>(CharactersEnum::debugMan)][static_cast<int>(player.state)];
+void GameStateManager::generateHitboxes(Character& player) {
+	AttackData activeAttack = MasterMap[static_cast<int>(CharactersEnum::debugMan)][static_cast<int>(player.state)];
 	if (activeAttack.startup < player.stateFrames && activeAttack.startup + activeAttack.active >= player.stateFrames) {
-		hitbox activeBox = hitbox(player.player, CharactersEnum::debugMan, player.state);
+		Hitbox activeBox = Hitbox(player.player, CharactersEnum::debugMan, player.state);
 		hitboxArr.emplace_back(activeBox);
 		std::cout << static_cast<int>(player.state) << " ACTIVE ATTACK!!!" << std::endl;
 	}
 }
 
-bool GameStateManager::hitBoxOverlapsECB(character& target, character& owner, attackData attack) {
+bool GameStateManager::hitBoxOverlapsECB(Character& target, Character& owner, AttackData attack) {
 	//int offsetFacing = owner.isFacingRight ? 1 : -1;
 	//float boxCenterX = owner.position.posX 
 	//float diff = std::abs(target.position.posX - owner.position.posX);
@@ -246,9 +250,9 @@ bool GameStateManager::hitBoxOverlapsECB(character& target, character& owner, at
 };
 
 
-void GameStateManager::handleAttackEnd(character& player) {
+void GameStateManager::handleAttackEnd(Character& player) {
 	std::cout << "This should also be 5 " << MasterMap[0][17].active << std::endl;
-	attackData activeAttack = MasterMap[static_cast<int>(CharactersEnum::debugMan)][static_cast<int>(player.state)];
+	AttackData activeAttack = MasterMap[static_cast<int>(CharactersEnum::debugMan)][static_cast<int>(player.state)];
 	if (activeAttack.recovery + activeAttack.active + activeAttack.startup <= player.stateFrames) {
 		std::cout << "ATTACK IS ENDING!!! active: " << activeAttack.active << " state: " << static_cast<int>(player.state) << std::endl;
 		player.state = States::stand;
@@ -260,7 +264,7 @@ bool GameStateManager::isAttacking(States state) {
 	return static_cast<int>(state) > static_cast<int>(States::attacksStart) ? true : false;
 }
 
-void GameStateManager::putInHitStun(character& player, attackData attack) {
+void GameStateManager::putInHitStun(Character& player, AttackData attack) {
 	player.state = States::hitStunGround;
 	player.stateFrames = attack.hitStunFrames * -1;
 	player.hMomentum = attack.hitKBH;
@@ -280,8 +284,8 @@ void GameStateManager::putInHitStun(character& player, attackData attack) {
 //}
 
 void GameStateManager::initTheBigMap() {  // Vector of vectors, not map of maps
-	MasterMap[static_cast<int>(CharactersEnum::debugMan)][static_cast<int>(States::fiveA)] = attackData(10, 5, 10, 10, 15, 0.05f, 0.05f, 0.05f, 0.0f, 0.002f, 0.0f, 0.05f, 0.0f, 30, 10);
-	// put all attack data into a JSON file or some such, pull in attack data by reading lines and parsing/ creating attackData structs
+	MasterMap[static_cast<int>(CharactersEnum::debugMan)][static_cast<int>(States::fiveA)] = AttackData(10, 5, 10, 10, 15, 0.05f, 0.05f, 0.05f, 0.0f, 0.002f, 0.0f, 0.05f, 0.0f, 30, 10);
+	// put all attack data into a JSON file or some such, pull in attack data by reading lines and parsing/ creating AttackData structs
 }
 
 

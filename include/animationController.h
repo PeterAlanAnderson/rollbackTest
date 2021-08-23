@@ -3,12 +3,13 @@
 
 #include <animationState.h>
 
-class animationController
+class AnimationController
 {
 public:
-	animationController(int character1, int character2);
-	std::vector<animationState> character1Animations;
-	std::vector<animationState> character2Animations;
+	AnimationController(int character1, int character2);
+	std::vector<AnimationState> character1Animations;
+	std::vector<AnimationState> character2Animations;
+	std::vector<AnimationState> debugAnimations;
 	void loadAnimations(int character, int playerNum);
 };
 

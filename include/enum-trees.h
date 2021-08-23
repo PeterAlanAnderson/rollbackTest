@@ -2,7 +2,7 @@
 #include <map>
 #include <unordered_map>
 
-struct attackData {
+struct AttackData {
 	int startup;
 	int active;
 	int recovery;
@@ -18,8 +18,8 @@ struct attackData {
 	float hitKBV;
 	int hitStunFrames;
 	int damage;
-	attackData() {}
-	attackData(
+	AttackData() {}
+	AttackData(
 		int a_startup,
 		int a_active,
 		int a_recovery,
@@ -79,8 +79,8 @@ enum class States {
 };
 #ifndef THEBIGMAP
 #define THEBIGMAP
-extern std::unordered_map<int, attackData> debugManAttacks;
-extern std::unordered_map<int, std::unordered_map<int, attackData>> MasterMap;
+extern std::unordered_map<int, AttackData> debugManAttacks;
+extern std::unordered_map<int, std::unordered_map<int, AttackData>> MasterMap;
 #endif
 //attackData debugManFiveA(10, 5, 10, 10, 15, 0.05, 0.05, 0.05, 0.0, 0.002, 0.0, 0.05, 0.0, 10);
 //debugManAttacks[static_cast<int>]

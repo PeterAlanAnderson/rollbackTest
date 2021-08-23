@@ -12,9 +12,9 @@
 typedef websocketpp::server<websocketpp::config::asio> Server;
 typedef websocketpp::client<websocketpp::config::asio_client> Client;
 
-class connection {
+class Connection {
 public:
-    connection(int connectionType, GameStateManager& gameStateManager);
+    Connection(int connectionType, GameStateManager& gameStateManager);
     GameStateManager gameStateManager;
     void init();
     int type;

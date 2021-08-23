@@ -1062,4 +1062,7 @@
   <ItemGroup>
     <None Include="premake5.lua" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="\\Desktop-efeaar8\t\Photos\Drawings\rollbackTest\testCharacter1\physicalHitbox.png" />
+  </ItemGroup>
 </Project>

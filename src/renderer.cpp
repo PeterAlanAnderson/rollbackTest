@@ -12,7 +12,7 @@
 #include <cmath>
 #include <array>
 
-renderer::renderer(GLFWwindow* a_window) {
+Renderer::Renderer(GLFWwindow* a_window) {
 
     window = a_window;
     // build and compile our shader zprogram
@@ -62,7 +62,7 @@ renderer::renderer(GLFWwindow* a_window) {
 }
 
 
-void renderer::generateTexturesAndDraw(const GameState &gameState) {
+void Renderer::generateTexturesAndDraw(const GameState &gameState) {
     //std::cout << "STATE FRAMES: " << gameState.p1StateFrames << " " << gameState.p2StateFrames << " \n";
     //std::cout << "start \n";
 
@@ -94,6 +94,14 @@ void renderer::generateTexturesAndDraw(const GameState &gameState) {
     textureObjects.emplace_back(player1Texture);
     textureObjects.emplace_back(player2Texture);
 
+    const bool shouldRenderHitboxes = false;
+
+    if (shouldRenderHitboxes) {
+        TextureObject physicalHitbox;
+        physicalHitbox.texture = animController.debugAnimations[0].getTexture(0);
+        //physicalHitbox.coords = 
+    }
+
     //std::cout << "RENDERED STATE \n";
     //std::cout << "P1 coords: " << gameState.p1CenterX << " P2 coords: " << gameState.p2FacingRight << std::endl;
     //std::cout << textureObjects[0].texture << " " << textureObjects[1].texture << std::endl;
@@ -101,7 +109,7 @@ void renderer::generateTexturesAndDraw(const GameState &gameState) {
     draw(textureObjects);
 }
 
-void renderer::draw(const std::vector<TextureObject> &textures) {
+void Renderer::draw(const std::vector<TextureObject> &textures) {
 
     ourShader.use();
     unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");

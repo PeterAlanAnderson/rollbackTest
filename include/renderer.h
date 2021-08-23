@@ -17,15 +17,15 @@ struct TextureObject {
 	glm::vec3 scaling;
 
 };
-class renderer
+class Renderer
 {
 public:
-	renderer(GLFWwindow* a_window);
+	Renderer(GLFWwindow* a_window);
 	void draw(const std::vector<TextureObject> &textures);  //TODO should take in by reference
 	unsigned int VBO, VAO, EBO;
 	GLFWwindow* window;
 	Shader ourShader = Shader("3.3.shader.vs", "3.3.shader.fs");
-	animationController animController = animationController(1, 1);
+	AnimationController animController = AnimationController(1, 1);
 	void generateTexturesAndDraw(const GameState &gameState);
 };
 

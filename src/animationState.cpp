@@ -7,7 +7,7 @@
 #include <stb/stb_image.h>
 #include <iostream>
 
-unsigned int animationState::getTexture(int frame) {
+unsigned int AnimationState::getTexture(int frame) {
     int i = 0;
     unsigned int texture = 0;
     //std::cout << "IN GET TEXTURE 1\n";
@@ -24,7 +24,7 @@ unsigned int animationState::getTexture(int frame) {
     return frames[0].texture;
 }
 
-void animationState::addFrame(const char* path, int a_lastFrame) {
+void AnimationState::addFrame(const char* path, int a_lastFrame) {
     frameConfig frame;
     frame.lastFrame = a_lastFrame;
     unsigned int texture;

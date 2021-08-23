@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <enum-trees.h>
+#include <hitbox.h>
 
 struct GameState  // TODO should be struct
 {
@@ -21,7 +22,8 @@ struct GameState  // TODO should be struct
 		int a_p2StateFrames,
 		std::string p2i,
 		int frame,
-		bool allInputs);
+		bool allInputs,
+		std::vector<Hitbox> hitboxes);
 
 	float p1CenterX;
 	float p1CenterY;
@@ -39,5 +41,6 @@ struct GameState  // TODO should be struct
 	std::string p2Input;
 	int frameCount;
 	bool remoteInputsActual;
+	std::vector<Hitbox> hitboxArr;
 };
 

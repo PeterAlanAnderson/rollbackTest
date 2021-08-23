@@ -26,12 +26,12 @@
 
 #pragma comment(lib,"ws2_32.lib")
 
-connection::connection(int connType, GameStateManager& gsm) {
-	gameStateManager = gsm;
-	type = connType;
-}
+Connection::Connection(int connType, GameStateManager& gsm) :
+	gameStateManager {gsm},
+	type {connType}
+{}
 
-void connection::init() {
+void Connection::init() {
 	const char* port = "8080";
 	//std::cout << "doing init\n";
 	//boost::system::error_code ec;

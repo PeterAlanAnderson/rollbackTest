@@ -3,21 +3,27 @@
 
 #include <enum-trees.h>
 
-struct Position {
+struct Position { // TODO default constructor
 	float posX;
 	float posY;
+	Position(const float a_posX = 0.0f, const float a_posY = 0.0f) :
+		posX(a_posX), posY(a_posY) {}
 };
 
-struct Dimensions {
-	float height;
+struct Dimensions { // TODO default constructor
 	float width;
+	float height;
+	Dimensions(const float a_width = 0.0f, const float a_height = 0.0f) :
+		width(a_width), height(a_height) {}
 };
 
-struct character  // TODO capitalize class name
-					// TODO struct instead of class
+
+
+struct Character  
+				
 {
-	character();
-	character(int a_player, float a_ecbHeight, float a_ecbWidth, float a_mass, float a_jumpPower, float a_speed);
+	Character();
+	Character(int a_player, float a_ecbHeight, float a_ecbWidth, float a_mass, float a_jumpPower, float a_speed);
 	int player;
 	Position position;
 	Dimensions ecb;

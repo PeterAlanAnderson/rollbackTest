@@ -7,7 +7,7 @@ struct frameConfig {
 	int lastFrame;
 };
 
-class animationState
+class AnimationState
 {
 public:
 	std::vector<frameConfig> frames;

@@ -3,16 +3,17 @@
 #include <animationState.h>
 #include <iostream>
 
-animationController::animationController(int character1, int character2) {
+AnimationController::AnimationController(int character1, int character2) {
 	loadAnimations(character1, 1); //can I somehow just pass the vector I'm trying to populate?
 	loadAnimations(character2, 2);
+	loadAnimations(3, 3);  // random high number for debug textures
 }
 
-void animationController::loadAnimations(int character, int playerNum) {
+void AnimationController::loadAnimations(int character, int playerNum) {
 	std::cout << "INITIALIZING ANIMATOR\n";
 	//std::vector<animationState> animations = playerNum == 1 ? character1Animations : character2Animations;
 	if (character == 1) {
-		animationState standingAnimation;
+		AnimationState standingAnimation;
 		standingAnimation.duration = 50;
 		standingAnimation.addFrame("resources/debugman_stand_1.png", 20);
 		standingAnimation.addFrame("resources/debugman_stand_2.png", 25);
@@ -22,7 +23,7 @@ void animationController::loadAnimations(int character, int playerNum) {
 		standingAnimation.addFrame("resources/debugman_stand_2.png", 50);
 
 		character1Animations.emplace_back(standingAnimation);
-		animationState walkForwardAnimation;
+		AnimationState walkForwardAnimation;
 		walkForwardAnimation.duration = 60;
 		walkForwardAnimation.addFrame("resources/faceWalkForward1.png", 20);
 		walkForwardAnimation.addFrame("resources/faceWalkForward2.png", 40);
@@ -37,7 +38,7 @@ void animationController::loadAnimations(int character, int playerNum) {
 		character1Animations.emplace_back(standingAnimation);
 		character1Animations.emplace_back(standingAnimation);
 		character1Animations.emplace_back(standingAnimation);
-		animationState hitStunStandingAnimation;
+		AnimationState hitStunStandingAnimation;
 		hitStunStandingAnimation.duration = 0;
 		hitStunStandingAnimation.addFrame("resources/debugman_standhitstun_1.png", -60);// map
 		hitStunStandingAnimation.addFrame("resources/debugman_standhitstun_2.png", -30);// map
@@ -48,7 +49,7 @@ void animationController::loadAnimations(int character, int playerNum) {
 		character1Animations.emplace_back(standingAnimation);
 		character1Animations.emplace_back(standingAnimation);
 		character1Animations.emplace_back(standingAnimation);
-		animationState fiveAAnimation;
+		AnimationState fiveAAnimation;
 		fiveAAnimation.duration = 25;
 		fiveAAnimation.addFrame("resources/debugman_5a_1.png", 6);
 		fiveAAnimation.addFrame("resources/debugman_5a_2.png", 9);
@@ -56,8 +57,12 @@ void animationController::loadAnimations(int character, int playerNum) {
 		fiveAAnimation.addFrame("resources/debugman_5a_2.png", 23);
 		fiveAAnimation.addFrame("resources/debugman_5a_1.png", 25);
 		character1Animations.emplace_back(fiveAAnimation);
-
-
+	}
+	if (character == 3) {
+		AnimationState physicalHitbox;
+		physicalHitbox.duration = 1;
+		physicalHitbox.addFrame("resources/physicalHitbox.png", 1);
+		debugAnimations.emplace_back(physicalHitbox);
 
 
 	}
